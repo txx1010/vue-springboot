@@ -5,3 +5,7 @@ spring.datasource:
   url: jdbc:mysql://localhost:3306/txx?serverTimezone=GMT%2b8
   username: root
   password: root
+mybatis:
+  mapper-locations: classpath:mapper/*.xml #扫描所有mybaits的xml文件，实现mapper接口和mapper接口配置文件之间的绑定
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
