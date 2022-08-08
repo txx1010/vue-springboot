@@ -21,4 +21,10 @@ public interface UserMapper {
 
     @Delete("delete from sys_user where id=#{id}")
     Integer deleteById(@Param("id") Integer id);       //@Param("id")里面的id和id=#{id}里面的必须一致
+
+    @Select("select * from sys_user where username like #{username} limit #{pageNum},#{pageSize}")//从第pageNum条数据起，查找pageSize条。
+    List<User> selectPage(Integer pageNum, Integer pageSize, String username);
+
+    @Select("select count(*) from sys_user where username like concat('%',#{username},'%')")//查询出sys_user里面符合username总条数
+    Integer selectTotal(String username);
 }
