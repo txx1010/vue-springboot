@@ -7,5 +7,9 @@ spring.datasource:
   password: root
 mybatis:
   mapper-locations: classpath:mapper/*.xml #扫描所有mybaits的xml文件，实现mapper接口和mapper接口配置文件之间的绑定
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#将mybaits优化成为mybaits-plus，所以之前mybaits打log的配置要优化成mybaits-plus打log的配置
+mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
