@@ -41,6 +41,12 @@ public class UserController {
         return  userService.removeById(id);
     }
 
+    @PostMapping ("/del/batch")
+    public boolean deleteBatch(@RequestBody List<Integer> ids){    //类似的传[1,2,3]这样的数据
+        //return userMapper.deleteById(id);
+        return  userService.removeByIds(ids);
+    }
+
     //分页查询
     //接口路径：/user/page
     //@RequestParam接受来自url里面的pageNum=?和pageSize=?
@@ -79,6 +85,7 @@ public class UserController {
         if (!"".equals(address)){
             queryWrapper.like("address",address);
         }
+        queryWrapper.orderByDesc("id");
         return userService.page(page,queryWrapper);
     }
 
