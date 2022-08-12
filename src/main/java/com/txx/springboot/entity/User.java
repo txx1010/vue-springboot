@@ -1,31 +1,58 @@
 package com.txx.springboot.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data//可以不添加get和set方法（lombok插件）
-@NoArgsConstructor//可以帮助创建无参构造方法
-@AllArgsConstructor//可以帮助创建有参构造方法
-@TableName(value = "sys_user")
-public class User {
+/**
+ * <p>
+ * 
+ * </p>
+ *
+ * @author txx
+ * @since 2022-08-12
+ */
+@Getter
+@Setter
+  @TableName("sys_user")
+@ApiModel(value = "User对象", description = "")
+public class User implements Serializable {
 
-    @TableId(type= IdType.AUTO)
-    private Integer id;
-    private String username;
-    @JsonIgnore
-    private String password;
-    private String nickname;
-    private String email;
-    private String phone;
-    private String address;
+    private static final long serialVersionUID = 1L;
 
-    @TableField(value = "avatar_url")//通过指定别名，可以让数据库中的名字和实体类的名字不一致
-    private String avatarUrl;
+      @ApiModelProperty("id")
+        @TableId(value = "id", type = IdType.AUTO)
+      private Integer id;
+
+      @ApiModelProperty("用户名")
+      private String username;
+
+      @ApiModelProperty("密码")
+      private String password;
+
+      @ApiModelProperty("昵称")
+      private String nickname;
+
+      @ApiModelProperty(" 邮箱")
+      private String email;
+
+      @ApiModelProperty("电话")
+      private String phone;
+
+      @ApiModelProperty("地址")
+      private String address;
+
+      @ApiModelProperty("创建时间	")
+      private LocalDateTime createTime;
+
+      @ApiModelProperty("头像	")
+      private String avatarUrl;
+
 
 }
