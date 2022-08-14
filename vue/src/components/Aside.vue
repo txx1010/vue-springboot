@@ -13,7 +13,7 @@
       <b style="color: white" v-show="logoTextShow">后台管理系统</b>
     </div>
         <el-menu-item index="/home">
-          <template slot="title"><i class="el-icon-house"></i>
+          <template ><i class="el-icon-house"></i>
             <span slot="title">主页</span>
           </template>
         </el-menu-item>
