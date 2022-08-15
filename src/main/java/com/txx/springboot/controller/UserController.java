@@ -2,10 +2,13 @@ package com.txx.springboot.controller;
 
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.txx.springboot.config.dto.UserDTO;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
@@ -32,9 +35,22 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/user")
         public class UserController {
+
+//        @Value("${files.upload.path}")
+//        private String fileUploadPath;
     
         @Resource
         private IUserService userService;
+
+        @PostMapping("/login")
+        public boolean login(@RequestBody UserDTO userDTO) {
+                String username = userDTO.getUsername();
+                String password = userDTO.getPassword();
+                if(StrUtil.isBlank(username) || StrUtil.isBlank(password)){
+                        return false;
+                }
+                return userService.login(userDTO);
+        }
 
         // 新增或者更新
         @PostMapping

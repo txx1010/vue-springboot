@@ -1,5 +1,6 @@
 package com.txx.springboot.service;
 
+import com.txx.springboot.config.dto.UserDTO;
 import com.txx.springboot.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IUserService extends IService<User> {
 
+    boolean login(UserDTO userDTO);
 }
