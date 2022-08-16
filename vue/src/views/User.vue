@@ -127,9 +127,8 @@ export default {
           address:this.address
         }
       }).then(res =>{
-        console.log(res)
-        this.tableData=res.records
-        this.total=res.total
+        this.tableData=res.data.records
+        this.total=res.data.total
       })
       // fetch("http://localhost:9090/user/page?pageNum="+this.pageNum+"&pageSize="+this.pageSize+"&username="+this.username)
       //     .then(res => res.json()).then(res =>{
@@ -141,7 +140,7 @@ export default {
     },
     save(){
       this.request.post("/user",this.form).then(res =>{
-        if(res){
+        if(res.data){
           this.$message.success("保存成功")
           this.dialogFormVisible=false
           this.load()
@@ -162,7 +161,7 @@ export default {
     },
     del(id){
       this.request.delete("/user/"+id).then(res =>{
-        if(res){
+        if(res.data){
           this.$message.success("删除成功")
           this.load()
         }
@@ -178,7 +177,7 @@ export default {
     delBatch(){
       let ids = this.multipleSelection.map(v =>v.id)  //[{},{},{}]=>[1,2,3]
       this.request.post("/user/del/batch",ids).then(res =>{
-        if(res){
+        if(res.data){
           this.$message.success("批量删除成功")
           this.load()
         }
