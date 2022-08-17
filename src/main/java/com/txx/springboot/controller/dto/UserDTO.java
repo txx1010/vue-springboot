@@ -1,4 +1,4 @@
-package com.txx.springboot.config.dto;
+package com.txx.springboot.controller.dto;
 
 import lombok.Data;
 
@@ -11,4 +11,5 @@ public class UserDTO {
     private String password;
     private String nickname;
     private String avatarUrl;
+    private String token;
 }

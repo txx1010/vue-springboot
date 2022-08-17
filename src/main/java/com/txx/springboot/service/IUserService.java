@@ -1,6 +1,6 @@
 package com.txx.springboot.service;
 
-import com.txx.springboot.config.dto.UserDTO;
+import com.txx.springboot.controller.dto.UserDTO;
 import com.txx.springboot.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 

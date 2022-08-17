@@ -4,12 +4,13 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.log.Log;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.txx.springboot.common.Constants;
-import com.txx.springboot.config.dto.UserDTO;
+import com.txx.springboot.controller.dto.UserDTO;
 import com.txx.springboot.entity.User;
 import com.txx.springboot.exception.ServiceException;
 import com.txx.springboot.mapper.UserMapper;
 import com.txx.springboot.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.txx.springboot.utils.TokenUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,9 +28,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public UserDTO login(UserDTO userDTO) {
         User one = getUserInfo(userDTO);
-        //业务异常
+        //判断业务异常
         if(one!=null){
             BeanUtil.copyProperties(one,userDTO,true);
+            //设置token
+            String token = TokenUtils.genToken(one.getId().toString(), one.getPassword());
+            userDTO.setToken(token);
             return userDTO;
         }
         else {

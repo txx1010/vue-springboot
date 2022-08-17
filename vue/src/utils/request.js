@@ -1,4 +1,5 @@
 import axios from 'axios'
+import ElementUI from "element-ui";
 
 const request = axios.create({
     baseURL: 'http://localhost:9090',  // 注意！！ 这里是全局统一加上了 '/api' 前缀，也就是说所有接口都会加上'/api'前缀在，页面里面写接口的时候就不要加 '/api'了，否则会出现2个'/api'，类似 '/api/api/user'这样的报错，切记！！！
@@ -10,8 +11,11 @@ const request = axios.create({
 // 比如统一加token，对请求参数统一加密
 request.interceptors.request.use(config => {
     config.headers['Content-Type'] = 'application/json;charset=utf-8';
+    let user=localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null
+    if(user){
+        config.headers['token'] = user.token;  // 设置请求头
+    }
 
-    // config.headers['token'] = user.token;  // 设置请求头
     return config
 }, error => {
     return Promise.reject(error)
@@ -29,6 +33,14 @@ request.interceptors.response.use(
         // 兼容服务端返回的字符串数据
         if (typeof res === 'string') {
             res = res ? JSON.parse(res) : res
+        }
+        //当权限验证不通过时给出提示
+        if(res.code==='401'){
+            ElementUI.Message({
+                message:res.msg,
+                type:'error'
+            })
+
         }
         return res;
     },
