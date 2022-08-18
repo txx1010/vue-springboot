@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.txx.springboot.common.Constants;
 import com.txx.springboot.common.Result;
 import com.txx.springboot.controller.dto.UserDTO;
+import com.txx.springboot.utils.TokenUtils;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
@@ -113,6 +114,8 @@ import org.springframework.web.multipart.MultipartFile;
                 if (!"".equals(address)){
                         queryWrapper.like("address",address);
                 }
+                User currentUser = TokenUtils.getCurrentUser();
+                System.out.println("获取当前用户信息==================================================================="+currentUser.getNickname());
                 queryWrapper.orderByDesc("id");
                 return Result.success(userService.page(new Page<>(pageNum, pageSize), queryWrapper));
         }

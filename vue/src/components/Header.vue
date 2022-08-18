@@ -11,9 +11,9 @@
     </div>
     <el-dropdown style="width: 150px;cursor: pointer;text-align:right">
       <div style="display: inline-block">
-        <img :src="user.avatarUrl" alt=""
+        <img src="../assets/images/admin.jpg" alt=""
              style="width: 30px;border-radius: 50%;position: relative;top:10px;right: 5px">
-        <span>{{ user.nickname}}</span><i class="el-icon-arrow-down" style="margin-left: 5px"></i>
+        <span>{{user.nickname}}</span><i class="el-icon-arrow-down" style="margin-left: 5px"></i>
       </div>
 
       <el-dropdown-menu slot="dropdown" style="width: 100px;text-align: center">
@@ -42,7 +42,7 @@ export default {
   },
   data(){
     return{
-      user:localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null
+      user:localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {}
     }
   },
   methods:{
@@ -52,6 +52,7 @@ export default {
       this.$message.success("退出成功")
     }
   },
+
 
 }
 </script>
