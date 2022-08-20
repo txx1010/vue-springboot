@@ -7,9 +7,6 @@
       <el-input style="width: 200px" placeholder="请输入地址" suffix-icon="el-icon-position" class="ml-5" v-model="address"></el-input>
       <el-button class="ml-5" type="primary" @click="load">搜索</el-button>
       <el-button  type="warning" @click="reset">重置</el-button>
-
-
-
     </div>
 
     <div style="margin: 10px 0">
