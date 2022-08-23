@@ -2,6 +2,9 @@ package com.txx.springboot.controller;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.txx.springboot.common.Constants;
+import com.txx.springboot.entity.Dict;
+import com.txx.springboot.mapper.DictMapper;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
@@ -27,8 +30,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/menu")
         public class MenuController {
     
-@Resource
-private IMenuService menuService;
+        @Resource
+        private IMenuService menuService;
+
+        @Resource
+        private DictMapper dictMapper;
 
         // 新增或者更新
         @PostMapping
@@ -78,6 +84,14 @@ private IMenuService menuService;
                 queryWrapper.orderByDesc("id");
                 return Result.success(menuService.page(new Page<>(pageNum, pageSize), queryWrapper));
                 }
+
+
+        @GetMapping("/icons")
+        public Result getIcons(){
+            QueryWrapper<Dict> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("type", Constants.DICT_TYPE_ICON);
+            return Result.success(dictMapper.selectList(null));
+        }
 
         }
 

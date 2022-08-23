@@ -28,7 +28,7 @@
 <!--      <el-button type="primary" @click="exp" class="ml-5">导出 <i class="el-icon-top"></i></el-button>-->
     </div>
 
-    <el-table :data="tableData" border stripe :header-cell-class-name="'headerBg'"  @selection-change="handleSelectionChange">
+    <el-table :data="tableData" border stripe :header-cell-class-name="'headerBg'">
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="id" label="ID" width="80px"></el-table-column>
       <el-table-column prop="name" label="名称"></el-table-column>
@@ -85,13 +85,16 @@
           :data="menuData"
           show-checkbox
           node-key="id"
-          :default-expanded-keys=[1]
-          :default-checked-keys=[4]
-          @check-change="handleCheckChange">
+          ref="tree"
+          :default-expanded-keys="expends"
+          :default-checked-keys="checks">
+        <span class="custom-tree-node" slot-scope="{ node, data }">
+        <span><i :class="data.icon"/>{{ data.name }}</span>
+        </span>
       </el-tree>
       <div slot="footer" class="dialog-footer">
         <el-button @click="menuDialogVis = false">取 消</el-button>
-        <el-button type="primary" @click="save">确 定</el-button>
+        <el-button type="primary" @click="saveRoleMenu">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -115,7 +118,10 @@ export default {
       menuData:[],
       props: {
         label: 'name',
-           }
+           },
+      expends:[],
+      checks:[],
+      roleId:0
     }
   },
   created() {
@@ -157,6 +163,16 @@ export default {
         }
       })
     },
+    saveRoleMenu(){
+      this.request.post("/role/roleMenu/" + this.roleId, this.$refs.tree.getCheckedKeys()).then(res =>{
+        if(res.code ==='200'){
+          this.$message.success("绑定成功")
+          this.menuDialogVis=false
+        }else {
+          this.$message.error(res.msg)
+        }
+      })
+    },
     handleAdd(){
       this.dialogFormVisible=true
       this.form={}
@@ -177,10 +193,7 @@ export default {
         }
       })
     },
-    handleSelectionChange(val){
-      console.log(val)
-      this.multipleSelection=val //获取到的是个对象 不是我们后台需要的ids
-    },
+
     delBatch(){
       let ids = this.multipleSelection.map(v =>v.id)  //[{},{},{}]=>[1,2,3]
       this.request.post("/role/del/batch",ids).then(res =>{
@@ -209,10 +222,18 @@ export default {
     },
     selectMenu(roleId){
       this.menuDialogVis = true
-
-
+      this.roleId = roleId
+      //请求菜单数据
       this.request.get("/menu").then(res =>{
         this.menuData = res.data
+
+        //把后台返回的菜单数据处理成id数组
+        this.expends = this.menuData.map(v =>v.id)
+      })
+
+      this.request.get("/role/roleMenu/"+roleId).then(res =>{
+        this.checks = res.data
+
       })
     },
     handleCheckChange(data, checked, indeterminate) {

@@ -34,7 +34,11 @@
       <el-table-column prop="id" label="ID" width="80px"></el-table-column>
       <el-table-column prop="name" label="名称"></el-table-column>
       <el-table-column prop="path" label="路径"></el-table-column>
-      <el-table-column prop="icon" label="图标"></el-table-column>
+      <el-table-column label="图标" align="center">
+        <template slot-scope="scope">
+          <i :class="scope.row.icon" style="font-size: 20px" />
+        </template>
+      </el-table-column>
       <el-table-column prop="description" label="描述"></el-table-column>
 
       <el-table-column label="操作" width="300px" align="center">
@@ -65,7 +69,11 @@
           <el-input v-model="form.path" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="图标">
-          <el-input v-model="form.icon" autocomplete="off"></el-input>
+         <el-select clearable v-model="form.icon" placeholder="请选择" style="width: 100%">
+           <el-option v-for="item in options" :key="item.name" :label="item.name" :value="item.value">
+             <i :class="item.value"/>  {{ item.name}}
+           </el-option>
+         </el-select>
         </el-form-item>
         <el-form-item label="描述">
           <el-input v-model="form.description" autocomplete="off"></el-input>
@@ -92,6 +100,7 @@ export default {
       form:{},
       dialogFormVisible:false,
       multipleSelection:[],
+      options:[]
     }
   },
   created() {
@@ -138,6 +147,11 @@ export default {
       //this.form=row     //赋予表单数据,这样有个bug就是，在点击取消的时候表单上仍然有值，不过数据库里面的值没有变化,
       this.form=JSON.parse(JSON.stringify(row));    //这是解决办法
       this.dialogFormVisible=true   //打开对话框
+
+      //请求图标的数据
+      this.request.get("/menu/icons").then(res =>{
+        this.options=res.data
+      })
     },
     del(id){
       this.request.delete("/menu/"+id).then(res =>{
