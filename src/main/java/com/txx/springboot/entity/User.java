@@ -32,7 +32,7 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
       @ApiModelProperty("id")
-        @TableId(value = "id", type = IdType.AUTO)
+      @TableId(value = "id", type = IdType.AUTO)
       private Integer id;
 
       @ApiModelProperty("用户名")
@@ -59,18 +59,21 @@ public class User implements Serializable {
       @ApiModelProperty("头像")
       private String avatarUrl;
 
-  @Override
-  public String toString() {
-    return "User{" +
-            "id=" + id +
-            ", username='" + username + '\'' +
-            ", password='" + password + '\'' +
-            ", nickname='" + nickname + '\'' +
-            ", email='" + email + '\'' +
-            ", phone='" + phone + '\'' +
-            ", address='" + address + '\'' +
-            ", createTime=" + createTime +
-            ", avatarUrl='" + avatarUrl + '\'' +
-            '}';
-  }
+      @ApiModelProperty("角色")
+      private String role;
+
+//  @Override
+//  public String toString() {
+//    return "User{" +
+//            "id=" + id +
+//            ", username='" + username + '\'' +
+//            ", password='" + password + '\'' +
+//            ", nickname='" + nickname + '\'' +
+//            ", email='" + email + '\'' +
+//            ", phone='" + phone + '\'' +
+//            ", address='" + address + '\'' +
+//            ", createTime=" + createTime +
+//            ", avatarUrl='" + avatarUrl + '\'' +
+//            '}';
+//  }
 }
