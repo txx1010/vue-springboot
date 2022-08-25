@@ -28,6 +28,11 @@
       <el-table-column prop="name" label="文件名称"></el-table-column>
       <el-table-column prop="type" label="文件类型"></el-table-column>
       <el-table-column prop="size" label="文件大小(kb)"></el-table-column>
+      <el-table-column label="预览">
+        <template slot-scope="scope">
+          <el-button type="primary" @click="preview(scope.row.url)">预览</el-button>
+        </template>
+      </el-table-column>
       <el-table-column label="下载">
         <template slot-scope="scope">
           <el-button type="primary" @click="download(scope.row.url)">下载</el-button>
@@ -153,7 +158,10 @@ export default {
     },
     download(url) {
       window.open(url)
-    }
+    },
+    preview(url) {
+      window.open('https://file.keking.cn/onlinePreview?url=' + encodeURIComponent(window.btoa((url))))
+    },
   }
 }
 </script>
