@@ -5,6 +5,7 @@ import cn.hutool.log.Log;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.txx.springboot.common.Constants;
 import com.txx.springboot.controller.dto.UserDTO;
+import com.txx.springboot.controller.dto.UserPasswordDTO;
 import com.txx.springboot.entity.Menu;
 import com.txx.springboot.entity.User;
 import com.txx.springboot.exception.ServiceException;
@@ -34,6 +35,9 @@ import java.util.List;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
     private static final Log LOG= Log.get();
+
+    @Resource
+    private UserMapper userMapper;
 
     @Resource
     private RoleMapper roleMapper;
@@ -77,6 +81,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             throw new ServiceException(Constants.CODE_600,"用户已存在");
         }
         return one;
+    }
+
+    @Override
+    public void updatePassword(UserPasswordDTO userPasswordDTO) {
+        int update = userMapper.updatePassword(userPasswordDTO);
+        if (update < 1) {
+            throw new ServiceException(Constants.CODE_600, "密码错误");
+        }
     }
 
     private User getUserInfo(UserDTO userDTO){

@@ -3,6 +3,7 @@ package com.txx.springboot.controller;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.SecureUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
@@ -10,6 +11,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.txx.springboot.common.Constants;
 import com.txx.springboot.common.Result;
 import com.txx.springboot.controller.dto.UserDTO;
+import com.txx.springboot.controller.dto.UserPasswordDTO;
 import com.txx.springboot.utils.TokenUtils;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
@@ -63,6 +65,19 @@ import org.springframework.web.multipart.MultipartFile;
                         return Result.error(Constants.CODE_400,"参数错误");
                 }
                 return Result.success(userService.register(userDTO));
+        }
+
+        /**
+         * 修改密码
+         * @param userPasswordDTO
+         * @return
+         */
+        @PostMapping("/password")
+        public Result password(@RequestBody UserPasswordDTO userPasswordDTO) {
+                userPasswordDTO.setPassword(SecureUtil.md5(userPasswordDTO.getPassword()));
+                userPasswordDTO.setNewPassword(SecureUtil.md5(userPasswordDTO.getNewPassword()));
+                userService.updatePassword(userPasswordDTO);
+                return Result.success();
         }
 
         // 新增或者更新
