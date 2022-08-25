@@ -12,6 +12,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.xml.soap.SAAJResult;
+
 /**
  * <p>
  * 
@@ -48,6 +50,8 @@ public class Menu implements Serializable {
       private List<Menu> children;
 
       private Integer pid;
+
+      private String pagePath;
 
 
 }

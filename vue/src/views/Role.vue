@@ -37,7 +37,7 @@
 
       <el-table-column label="操作" width="280" align="center">
         <template slot-scope="scope">
-          <el-button type="info" @click="selectMenu(scope.row.id)">分配菜单 <i class="el-icon-menu"></i></el-button>
+          <el-button type="info" @click="selectMenu(scope.row)">分配菜单 <i class="el-icon-menu"></i></el-button>
           <el-button type="success" @click="handleEdit(scope.row)">编辑 <i class="el-icon-edit"></i></el-button>
           <el-popconfirm
               class="ml-5"
@@ -92,7 +92,7 @@
           ref="tree"
           :default-expanded-keys="expends"
           :default-checked-keys="checks"
-          :check-strictly="true"
+
       >
         <span class="custom-tree-node" slot-scope="{ node, data }">
         <span><i :class="data.icon"/>{{ data.name }}</span>
@@ -127,7 +127,8 @@ export default {
            },
       expends:[],
       checks:[],
-      roleId:0
+      roleId:0,
+      roleFlag:''
     }
   },
   created() {
@@ -163,7 +164,13 @@ export default {
           this.$message.success("保存成功")
           this.dialogFormVisible=false
           this.load()
+
+          //操作管理员角色的时候需要重新登录
+          if(this.roleFlag ===  'ROLE_ADMIN'){
+            this.$store.commit("logout")
+          }
         }
+
         else {
           this.$message.error("保存失败")
         }
@@ -174,6 +181,11 @@ export default {
         if(res.code ==='200'){
           this.$message.success("绑定成功")
           this.menuDialogVis=false
+
+          //操作管理员角色的时候需要重新登录
+          if(this.roleFlag === 'ROLE_ADMIN'){
+            this.$store.commit("logout")
+          }
         }else {
           this.$message.error(res.msg)
         }
@@ -226,9 +238,10 @@ export default {
       this.pageNum=pageNum
       this.load()
     },
-    selectMenu(roleId){
+    selectMenu(role){
       this.menuDialogVis = true
-      this.roleId = roleId
+      this.roleId = role.id
+      this.roleFlag = role.flag
       //请求菜单数据
       this.request.get("/menu").then(res =>{
         this.menuData = res.data
@@ -237,7 +250,7 @@ export default {
         this.expends = this.menuData.map(v =>v.id)
       })
 
-      this.request.get("/role/roleMenu/"+roleId).then(res =>{
+      this.request.get("/role/roleMenu/"+this.roleId).then(res =>{
         this.checks = res.data
 
       })
