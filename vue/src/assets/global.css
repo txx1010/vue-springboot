@@ -4,12 +4,21 @@
     box-sizing: border-box;
 }
 
-.ml-5{
+
+.ml-5 {
     margin-left: 5px;
 }
-.mr-5{
+.mr-5 {
     margin-right: 5px;
 }
-.pd-10{
+.pd-10 {
     padding: 10px 0;
+}
+.m-10 {
+    margin: 10px 0;
+}
+
+a {
+    text-decoration: none;
+    color: #666;
 }
