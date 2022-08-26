@@ -41,7 +41,7 @@ import org.springframework.web.bind.annotation.RestController;
         public Result save(@RequestBody Menu menu) {
             menuService.saveOrUpdate(menu);
                 return Result.success();
-                }
+        }
 
         @DeleteMapping("/{id}")
         public Result delete(@PathVariable Integer id) {

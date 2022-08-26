@@ -53,5 +53,7 @@ public class Menu implements Serializable {
 
       private String pagePath;
 
+      private String sortNum;
+
 
 }
