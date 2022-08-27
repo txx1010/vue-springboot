@@ -101,6 +101,14 @@ import org.springframework.web.multipart.MultipartFile;
             return Result.success(userService.list());
         }
 
+        @GetMapping("/role/{role}")
+        public Result findUesrsByRole(@PathVariable String role) {
+                QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("role",role);
+                List<User> list = userService.list(queryWrapper);
+                return Result.success(list);
+        }
+
         @GetMapping("/{id}")
         public Result findOne(@PathVariable Integer id) {
             return Result.success(userService.getById(id));
@@ -119,20 +127,20 @@ import org.springframework.web.multipart.MultipartFile;
                                    @RequestParam(defaultValue = "") String username,
                                    @RequestParam(defaultValue = "") String email,
                                    @RequestParam(defaultValue = "")String address) {
-                QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-                if(!"".equals(username)){
-                        queryWrapper.like("username",username);
-                }
-                if (!"".equals(email)){
-                        queryWrapper.like("email",email);
-                }
-                if (!"".equals(address)){
-                        queryWrapper.like("address",address);
-                }
-                User currentUser = TokenUtils.getCurrentUser();
-                System.out.println("获取当前用户信息==================================================================="+currentUser.getNickname());
-                queryWrapper.orderByDesc("id");
-                return Result.success(userService.page(new Page<>(pageNum, pageSize), queryWrapper));
+//                QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+//                if(!"".equals(username)){
+//                        queryWrapper.like("username",username);
+//                }
+//                if (!"".equals(email)){
+//                        queryWrapper.like("email",email);
+//                }
+//                if (!"".equals(address)){
+//                        queryWrapper.like("address",address);
+//                }
+//                User currentUser = TokenUtils.getCurrentUser();
+//                System.out.println("获取当前用户信息==================================================================="+currentUser.getNickname());
+//                queryWrapper.orderByDesc("id");
+                return Result.success(userService.findPage(new Page<>(pageNum, pageSize), username,email,address));
         }
         /**
          * 导出接口

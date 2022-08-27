@@ -1,5 +1,6 @@
 package com.txx.springboot.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.txx.springboot.controller.dto.UserDTO;
 import com.txx.springboot.controller.dto.UserPasswordDTO;
 import com.txx.springboot.entity.User;
@@ -20,4 +21,6 @@ public interface IUserService extends IService<User> {
     User register(UserDTO userDTO);
 
     void updatePassword(UserPasswordDTO userPasswordDTO);
+
+    Page<User> findPage(Page<User> page, String username, String email, String address);
 }
