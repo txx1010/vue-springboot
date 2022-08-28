@@ -1,12 +1,11 @@
 <template>
   <div>
-
-    <div style="padding: 10px 0">
+    <div style="margin: 10px 0">
       <el-input style="width: 200px" placeholder="请输入名称" suffix-icon="el-icon-search" v-model="username"></el-input>
       <el-input style="width: 200px" placeholder="请输入邮箱" suffix-icon="el-icon-message" class="ml-5" v-model="email"></el-input>
       <el-input style="width: 200px" placeholder="请输入地址" suffix-icon="el-icon-position" class="ml-5" v-model="address"></el-input>
       <el-button class="ml-5" type="primary" @click="load">搜索</el-button>
-      <el-button  type="warning" @click="reset">重置</el-button>
+      <el-button type="warning" @click="reset">重置</el-button>
     </div>
 
     <div style="margin: 10px 0">
@@ -22,8 +21,8 @@
       >
         <el-button type="danger" slot="reference">批量删除 <i class="el-icon-remove-outline"></i></el-button>
       </el-popconfirm>
-      <el-upload action="http://localhost:9090/user/import" :show-file-list="false" accept="xlsx" :on-success="handleExcelImportSuccess" style="display:inline-block">
-      <el-button type="primary" class="ml-5">导入 <i class="el-icon-bottom"></i></el-button>
+      <el-upload :action="'http://' + serverIp + ':9090/user/import'" :show-file-list="false" accept="xlsx" :on-success="handleExcelImportSuccess" style="display: inline-block">
+        <el-button type="primary" class="ml-5">导入 <i class="el-icon-bottom"></i></el-button>
       </el-upload>
       <el-button type="primary" @click="exp" class="ml-5">导出 <i class="el-icon-top"></i></el-button>
     </div>
@@ -43,8 +42,7 @@
       <el-table-column prop="email" label="邮箱"></el-table-column>
       <el-table-column prop="phone" label="电话"></el-table-column>
       <el-table-column prop="address" label="地址"></el-table-column>
-
-      <el-table-column label="操作" width="300" align="center">
+      <el-table-column label="操作"  width="500" align="center">
         <template slot-scope="scope">
           <el-button type="primary" @click="lookCourse(scope.row.courses)" v-if="scope.row.role === 'ROLE_TEACHER'">查看教授课程 <i class="el-icon-document"></i></el-button>
           <el-button type="warning" @click="lookStuCourse(scope.row.stuCourses)" v-if="scope.row.role === 'ROLE_STUDENT'">查看已选课程 <i class="el-icon-document"></i></el-button>
@@ -75,7 +73,7 @@
       </el-pagination>
     </div>
 
-    <el-dialog title="用户信息" :visible.sync="dialogFormVisible" width="30%">
+    <el-dialog title="用户信息" :visible.sync="dialogFormVisible" width="30%" >
       <el-form label-width="80px" size="small">
         <el-form-item label="用户名">
           <el-input v-model="form.username" autocomplete="off"></el-input>
@@ -104,15 +102,15 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="课程信息" :visible.sync="vis" width="30%">
-      <el-table :data = "courses" border stripe>
+    <el-dialog title="课程信息" :visible.sync="vis" width="30%" >
+      <el-table :data="courses" border stripe>
         <el-table-column prop="name" label="课程名称"></el-table-column>
         <el-table-column prop="score" label="学分"></el-table-column>
       </el-table>
     </el-dialog>
 
-    <el-dialog title="课程信息" :visible.sync="StuVis" width="30%">
-      <el-table :data = "courses" border stripe>
+    <el-dialog title="课程信息" :visible.sync="stuVis" width="30%" >
+      <el-table :data="stuCourses" border stripe>
         <el-table-column prop="name" label="课程名称"></el-table-column>
         <el-table-column prop="score" label="学分"></el-table-column>
       </el-table>
@@ -121,138 +119,133 @@
 </template>
 
 <script>
+import {serverIp} from "../../public/config";
+
 export default {
   name: "User",
-  data(){
+  data() {
     return {
+      serverIp: serverIp,
       tableData: [],
       total: 0,
-      pageNum:1,
-      pageSize:10,
-      username:"",
-      email:"",
-      address:"",
-      form:{},
-      dialogFormVisible:false,
-      multipleSelection:[],
-      roles:[],
+      pageNum: 1,
+      pageSize: 10,
+      username: "",
+      email: "",
+      address: "",
+      form: {},
+      dialogFormVisible: false,
+      multipleSelection: [],
+      roles: [],
       courses: [],
-      stuCourses:[],
       vis: false,
-      StuVis:false
+      stuCourses: [],
+      stuVis: false
     }
   },
   created() {
     this.load()
   },
-  methods:{
-    lookCourse(courses){
+  methods: {
+    lookCourse(courses) {
       this.courses = courses
       this.vis = true
     },
-    lookStuCourse(stuCourses){
+    lookStuCourse(stuCourses) {
       this.stuCourses = stuCourses
-      this.StuVis = true
+      this.stuVis = true
     },
-    load(){
-      //与下面注释的代码对比，我改动的是api的替换和赋值方式的替换
-      this.request.get("/user/page",{
-        params:{
-          pageNum:this.pageNum,
-          pageSize:this.pageSize,
-          username:this.username,
-          email:this.email,
-          address:this.address
+    load() {
+      this.request.get("/user/page", {
+        params: {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize,
+          username: this.username,
+          email: this.email,
+          address: this.address,
         }
-      }).then(res =>{
-        this.tableData=res.data.records
-        this.total=res.data.total
+      }).then(res => {
+
+        this.tableData = res.data.records
+        this.total = res.data.total
+
       })
-      // fetch("http://localhost:9090/user/page?pageNum="+this.pageNum+"&pageSize="+this.pageSize+"&username="+this.username)
-      //     .then(res => res.json()).then(res =>{
-      //   console.log(res)
-      //   //数据绑定
-      //   this.tableData = res.data
-      //   this.total=res.total
-      // })
-      this.request.get("/role").then(res =>{
-        this.roles =res.data
+
+      this.request.get("/role").then(res => {
+        this.roles = res.data
       })
     },
-    save(){
-      this.request.post("/user",this.form).then(res =>{
-        if(res.code ==='200'){
+    save() {
+      this.request.post("/user", this.form).then(res => {
+        if (res.code === '200') {
           this.$message.success("保存成功")
-          this.dialogFormVisible=false
+          this.dialogFormVisible = false
           this.load()
-        }
-        else {
+        } else {
           this.$message.error("保存失败")
         }
       })
     },
-    handleAdd(){
-      this.dialogFormVisible=true
-      this.form={}
+    handleAdd() {
+      this.dialogFormVisible = true
+      this.form = {}
     },
-    handleEdit(row){
-      //this.form=row     //赋予表单数据,这样有个bug就是，在点击取消的时候表单上仍然有值，不过数据库里面的值没有变化,
-      this.form=JSON.parse(JSON.stringify(row));    //这是解决办法
-      this.dialogFormVisible=true   //打开对话框
+    handleEdit(row) {
+      this.form = JSON.parse(JSON.stringify(row))
+      this.dialogFormVisible = true
     },
-    del(id){
-      this.request.delete("/user/"+id).then(res =>{
-        if(res.code ==='200'){
+    del(id) {
+      this.request.delete("/user/" + id).then(res => {
+        if (res.code === '200') {
           this.$message.success("删除成功")
           this.load()
-        }
-        else {
+        } else {
           this.$message.error("删除失败")
         }
       })
     },
-    handleSelectionChange(val){
+    handleSelectionChange(val) {
       console.log(val)
-      this.multipleSelection=val //获取到的是个对象 不是我们后台需要的ids
+      this.multipleSelection = val
     },
-    delBatch(){
-      let ids = this.multipleSelection.map(v =>v.id)  //[{},{},{}]=>[1,2,3]
-      this.request.post("/user/del/batch",ids).then(res =>{
-        if(res.code ==='200'){
+    delBatch() {
+      let ids = this.multipleSelection.map(v => v.id)  // [{}, {}, {}] => [1,2,3]
+      this.request.post("/user/del/batch", ids).then(res => {
+        if (res.code === '200') {
           this.$message.success("批量删除成功")
           this.load()
-        }
-        else {
+        } else {
           this.$message.error("批量删除失败")
         }
       })
     },
-    reset(){
-      this.username=""
-      this.email=""
-      this.address=""
+    reset() {
+      this.username = ""
+      this.email = ""
+      this.address = ""
       this.load()
     },
-    handleSizeChange(pageSize){
+    handleSizeChange(pageSize) {
       console.log(pageSize)
-      this.pageSize=pageSize
+      this.pageSize = pageSize
       this.load()
     },
-    handleCurrentChange(pageNum){
+    handleCurrentChange(pageNum) {
       console.log(pageNum)
-      this.pageNum=pageNum
+      this.pageNum = pageNum
       this.load()
     },
-    exp(){
-      window.open("http://localhost:9090/user/export")
+    exp() {
+      window.open(`http://${serverIp}:9090/user/export`)
     },
-    handleExcelImportSuccess(){
+    handleExcelImportSuccess() {
       this.$message.success("导入成功")
       this.load()
     }
   }
 }
 </script>
+
 
 <style>
 .headerBg {
