@@ -6,7 +6,6 @@ import store from '@/store'
 Vue.use(VueRouter)
 
 const routes = [
-
   {
     path: '/login',
     name: 'login',
@@ -21,6 +20,33 @@ const routes = [
     path: '/404',
     name: '404',
     component: () => import('../views/404.vue')
+  },
+  {
+    path: '/front',
+    name: 'Front',
+    component: () => import('../views/front/Front'),
+    children :[
+      {
+        path: 'home',
+        name: 'FrontHome',
+        component: () => import('../views/front/Home')
+      },
+      {
+        path: 'item1',
+        name: 'Item1',
+        component: () => import('../views/front/Item1')
+      },
+      {
+        path: 'person',
+        name: 'FrontPerson',
+        component: () => import('../views/front/Person')
+      },
+      {
+        path: 'password',
+        name: 'FrontPassword',
+        component: () => import('../views/front/Password')
+      },
+    ]
   },
 ]
 

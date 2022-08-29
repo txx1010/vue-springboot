@@ -5,13 +5,16 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.Quarter;
 import com.txx.springboot.common.Result;
+import com.txx.springboot.config.AuthAccess;
 import com.txx.springboot.entity.User;
+import com.txx.springboot.mapper.FileMapper;
 import com.txx.springboot.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,6 +27,9 @@ public class EchartsController {
 
     @Autowired
     private IUserService userService;
+
+    @Resource
+    private FileMapper fileMapper;
 
     @GetMapping("/example")
     public Result get(){
@@ -52,5 +58,12 @@ public class EchartsController {
             }
         }
         return  Result.success(CollUtil.newArrayList(q1,q2,q3,q4));
+    }
+
+
+    @AuthAccess
+    @GetMapping("/file/front/all")
+    public Result update() {
+        return Result.success(fileMapper.selectList(null));
     }
 }
