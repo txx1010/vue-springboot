@@ -1,12 +1,15 @@
 package com.txx.springboot.controller;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.lang.TypeReference;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.txx.springboot.common.Constants;
 import com.txx.springboot.common.Result;
 import com.txx.springboot.entity.Files;
 import com.txx.springboot.entity.User;
@@ -14,7 +17,12 @@ import com.txx.springboot.mapper.FileMapper;
 import com.txx.springboot.common.Result;
 import com.txx.springboot.entity.Files;
 import com.txx.springboot.mapper.FileMapper;
+import org.apache.tomcat.util.buf.CharsetCache;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,6 +46,9 @@ public class FileController {
 
     @Resource
     private FileMapper fileMapper;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     /**
      * 文件上传接口
@@ -85,6 +96,25 @@ public class FileController {
         saveFile.setMd5(md5);
         fileMapper.insert(saveFile);
 
+
+        //方法一：性能最高
+        //从redis取出数据，操作完，再设置（不用查询数据库）
+//        String json = stringRedisTemplate.opsForValue().get(Constants.FILES_KEY);
+//        List<Files> files1 = JSONUtil.toBean(json, new TypeReference<List<Files>>() {
+//        }, true);
+//        files1.add(saveFile);
+//        setCache(Constants.FILES_KEY , JSONUtil.toJsonStr(files1));
+////
+//
+//        //方法二：比较简单
+//        //设置最新的缓存
+//        List<Files> files = fileMapper.selectList(null);
+//        //设置最新的缓存
+//        setCache(Constants.FILES_KEY , JSONUtil.toJsonStr(files));
+
+
+        //方法三：最简单的方式，直接清空缓存
+        flushRedis(Constants.FILES_KEY);
         return url;
     }
 
@@ -123,18 +153,23 @@ public class FileController {
         return filesList.size() == 0 ? null : filesList.get(0);
     }
 
-
-
+//    @CachePut(value = "files", key = "'findAll'")
     @PostMapping("/update")
     public Result update(@RequestBody Files files) {
-        return Result.success(fileMapper.updateById(files));
+        fileMapper.updateById(files);
+        flushRedis(Constants.FILES_KEY);
+        return Result.success();
     }
 
+
+    //清除一条缓存，key为要清空的数据
+//    @CacheEvict(value="files",key="'findAll'")
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
         Files files = fileMapper.selectById(id);
         files.setIsDelete(true);
         fileMapper.updateById(files);
+        flushRedis(Constants.FILES_KEY);
         return Result.success();
     }
 
@@ -173,5 +208,13 @@ public class FileController {
         return Result.success(fileMapper.selectPage(new Page<>(pageNum, pageSize), queryWrapper));
     }
 
+    // 设置缓存
+    private void  setCache(String key, String value){
+        stringRedisTemplate.opsForValue().set(key , value);
+    }
+    //删除缓存
+    private void flushRedis(String key){
+        stringRedisTemplate.delete(key);
+    }
 
 }

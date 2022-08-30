@@ -31,9 +31,9 @@
         <el-menu :default-active="'1'" class="el-menu-demo" mode="horizontal" router>
           <el-menu-item index="/front/home">首页</el-menu-item>
           <el-submenu index="2">
-            <template slot="title">我的工作台</template>
-            <el-menu-item index="/front/item1">选项1</el-menu-item>
-            <el-menu-item index="2-2">选项2</el-menu-item>
+            <template slot="title">教务管理</template>
+            <el-menu-item index="/front/item1">选课</el-menu-item>
+            <el-menu-item @click="login">进入后台</el-menu-item>
             <el-menu-item index="2-3">选项3</el-menu-item>
             <el-submenu index="2-4">
               <template slot="title">选项4</template>
@@ -42,8 +42,8 @@
               <el-menu-item index="2-4-3">选项3</el-menu-item>
             </el-submenu>
           </el-submenu>
-          <el-menu-item index="3" disabled>消息中心</el-menu-item>
-          <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
+          <el-menu-item index="3" >消息中心</el-menu-item>
+          <el-menu-item index="4"><a href="http://jwgl9.ujn.edu.cn/jwglxt/xtgl/login_slogin.html?kickout=1" target="_blank">成绩管理</a></el-menu-item>
         </el-menu>
       </div>
       <div style="width: 200px">
@@ -81,6 +81,8 @@
 </template>
 
 <script>
+import {setRouters} from "@/router";
+
 export default {
   name: "Front",
   data() {
@@ -95,6 +97,23 @@ export default {
     logout() {
       this.$store.commit("logout")
       this.$message.success("退出成功")
+    },
+    login() {
+          this.request.post("/user/login", this.user).then(res => {
+            if(res.code === '200') {
+              localStorage.setItem("user", JSON.stringify(res.data))  // 存储用户信息到浏览器
+              localStorage.setItem("menus", JSON.stringify(res.data.menus))  // 存储用户信息到浏览器
+
+              //动态设置当前用户的路由
+              setRouters()
+              this.$message.success("进入后台")
+                this.$router.push("/")
+
+            } else {
+              this.$message.error(res.msg)
+            }
+          })
+
     }
   }
 }
