@@ -32,17 +32,11 @@
           <el-menu-item index="/front/home">首页</el-menu-item>
           <el-submenu index="2">
             <template slot="title">教务管理</template>
-            <el-menu-item index="/front/item1">选课</el-menu-item>
             <el-menu-item @click="login">进入后台</el-menu-item>
-            <el-menu-item index="2-3">选项3</el-menu-item>
-            <el-submenu index="2-4">
-              <template slot="title">选项4</template>
-              <el-menu-item index="2-4-1">选项1</el-menu-item>
-              <el-menu-item index="2-4-2">选项2</el-menu-item>
-              <el-menu-item index="2-4-3">选项3</el-menu-item>
-            </el-submenu>
+            <el-menu-item index="/front/item1">学分查询</el-menu-item>
+            <el-menu-item index="2-3">消息中心</el-menu-item>
           </el-submenu>
-          <el-menu-item index="3" >消息中心</el-menu-item>
+          <el-menu-item index="/front/article" >文章列表</el-menu-item>
           <el-menu-item index="4"><a href="http://jwgl9.ujn.edu.cn/jwglxt/xtgl/login_slogin.html?kickout=1" target="_blank">成绩管理</a></el-menu-item>
         </el-menu>
       </div>
