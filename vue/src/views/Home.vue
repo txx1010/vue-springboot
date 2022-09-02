@@ -44,6 +44,7 @@
             <div>VueX</div>
             <div>ElementUI</div>
             <div>Axios</div>
+            <div>Ecahrts</div>
           </el-col>
         </el-row>
       </el-col>
