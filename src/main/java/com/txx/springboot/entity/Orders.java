@@ -46,6 +46,9 @@ public class Orders implements Serializable {
       //支付宝订单流水号
       private String alipayNo;
 
+      //退款时间
+      private String returnTime;
+
       @ApiModelProperty("订单总价")
       private BigDecimal total;
 

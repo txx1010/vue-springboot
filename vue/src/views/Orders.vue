@@ -130,7 +130,7 @@ export default {
         if(res.code === '200') {
           this.$message.success("退款成功")
         }  else {
-          this.$message.error("退款失败")
+          this.$message.error(res.msg)
         }
         this.load()
       })
