@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.txx.springboot.controller.dto.HandPaperDTO;
 import com.txx.springboot.controller.dto.PaperDTO;
 import com.txx.springboot.entity.PaperQuestion;
 import com.txx.springboot.entity.Question;
@@ -54,6 +55,27 @@ public class PaperController {
             return Result.success();
     }
 
+    @PostMapping("/handPaper")
+    public Result handPaper(@RequestBody HandPaperDTO paperDTO) {
+        //删除老的试卷
+        UpdateWrapper<PaperQuestion> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("paper_id", paperDTO.getPaperId());
+        paperQuestionService.remove(updateWrapper);
+
+        if(CollUtil.isEmpty(paperDTO.getHandleQuestionIds())){
+            throw new ServiceException("-1","题目数量不足");
+        }
+        List<Integer> handleQuestionIds = paperDTO.getHandleQuestionIds();
+        List<PaperQuestion> list = new ArrayList<>();
+        for(Integer handleQuestionId : handleQuestionIds){
+            PaperQuestion paperQuestion = new PaperQuestion();
+            paperQuestion.setPaperId(paperDTO.getPaperId());
+            paperQuestion.setQuestionId(handleQuestionId);
+            list.add(paperQuestion);
+        }
+        paperQuestionService.saveBatch(list);
+        return Result.success();
+    }
     @PostMapping("/takePaper")
     public Result takePaper(@RequestBody PaperDTO paperDTO) {
         //删除老的试卷
