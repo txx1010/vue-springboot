@@ -10,15 +10,21 @@ import cn.hutool.poi.excel.ExcelWriter;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.txx.springboot.common.Constants;
 import com.txx.springboot.common.Result;
+import com.txx.springboot.config.AuthAccess;
 import com.txx.springboot.controller.dto.UserDTO;
 import com.txx.springboot.controller.dto.UserPasswordDTO;
+import com.txx.springboot.entity.Validation;
+import com.txx.springboot.exception.ServiceException;
+import com.txx.springboot.service.IValidationService;
 import com.txx.springboot.utils.TokenUtils;
+import org.springframework.messaging.MessagingException;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.List;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
@@ -46,6 +52,9 @@ import org.springframework.web.multipart.MultipartFile;
         @Resource
         private IUserService userService;
 
+        @Resource
+        private IValidationService validationService;
+
         @PostMapping("/login")
         public Result login(@RequestBody UserDTO userDTO) {
                 String username = userDTO.getUsername();
@@ -55,6 +64,56 @@ import org.springframework.web.multipart.MultipartFile;
                 }
                 UserDTO dto = userService.login(userDTO);
                 return Result.success(dto);
+        }
+        @AuthAccess
+        @PostMapping("/loginAccount")
+        public Result loginAccount(@RequestBody UserDTO userDTO) {
+                String username = userDTO.getUsername();
+                String password = userDTO.getPassword();
+                if(StrUtil.isBlank(username) || StrUtil.isBlank(password)){
+                        return Result.error(Constants.CODE_400,"参数错误");
+                }
+                UserDTO dto = userService.login(userDTO);
+                return Result.success(dto);
+        }
+        @AuthAccess
+        @PostMapping("/loginEmail")
+        public Result loginEmail(@RequestBody UserDTO userDTO) {
+                String email = userDTO.getEmail();
+                String code = userDTO.getCode();
+                if(StrUtil.isBlank(email) || StrUtil.isBlank(code)){
+                        return Result.error(Constants.CODE_400,"参数错误");
+                }
+                UserDTO dto = userService.loginEmail(userDTO);
+                return Result.success(dto);
+        }
+
+        // 忘记密码 | 重置密码
+        @AuthAccess
+        @PutMapping("/reset")
+        public Result reset(@RequestBody UserPasswordDTO userPasswordDTO) {
+                if (StrUtil.isBlank(userPasswordDTO.getEmail()) || StrUtil.isBlank(userPasswordDTO.getCode())) {
+                        throw new ServiceException("-1", "参数异常");
+                }
+                // 先查询 邮箱验证的表，看看之前有没有发送过  邮箱code，如果不存在，就重新获取
+                QueryWrapper<Validation> validationQueryWrapper = new QueryWrapper<>();
+                validationQueryWrapper.eq("email", userPasswordDTO.getEmail());
+                validationQueryWrapper.eq("code", userPasswordDTO.getCode());
+                validationQueryWrapper.ge("time", new Date());  // 查询数据库没过期的code, where time >= new Date()
+                Validation one = validationService.getOne(validationQueryWrapper);
+                if (one == null) {
+                        throw new ServiceException("-1", "验证码过期，请重新获取");
+                }
+
+                // 如果验证通过了，就查询要不过户的信息
+                QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+                userQueryWrapper.eq("email", userPasswordDTO.getEmail());  //存根据email查询用户信息
+                User user = userService.getOne(userQueryWrapper);
+
+                // 重置密码
+                user.setPassword("123");
+                userService.updateById(user);
+                return Result.success();
         }
 
         @PostMapping("/register")
@@ -74,8 +133,8 @@ import org.springframework.web.multipart.MultipartFile;
          */
         @PostMapping("/password")
         public Result password(@RequestBody UserPasswordDTO userPasswordDTO) {
-                userPasswordDTO.setPassword(SecureUtil.md5(userPasswordDTO.getPassword()));
-                userPasswordDTO.setNewPassword(SecureUtil.md5(userPasswordDTO.getNewPassword()));
+                userPasswordDTO.setPassword(userPasswordDTO.getPassword());
+                userPasswordDTO.setNewPassword(userPasswordDTO.getNewPassword());
                 userService.updatePassword(userPasswordDTO);
                 return Result.success();
         }
@@ -100,6 +159,22 @@ import org.springframework.web.multipart.MultipartFile;
         public Result findAll() {
             return Result.success(userService.list());
         }
+
+        @AuthAccess
+        //这个注解表示这个接口有权限，即没有token的情况下也可以访问
+        @GetMapping("/email/{email}/{type}")
+        public Result sendEmailCode(@PathVariable String email, @PathVariable Integer type) throws MessagingException, javax.mail.MessagingException {
+                if(StrUtil.isBlank(email)) {
+                        throw new ServiceException(Constants.CODE_400, "参数错误");
+                }
+                if(type == null) {
+                        throw new ServiceException(Constants.CODE_400, "参数错误");
+                }
+                userService.sendEmailCode(email, type);
+                return Result.success();
+        }
+
+
 
         @GetMapping("/role/{role}")
         public Result findUesrsByRole(@PathVariable String role) {

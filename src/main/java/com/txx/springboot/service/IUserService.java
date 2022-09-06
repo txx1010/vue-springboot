@@ -6,6 +6,8 @@ import com.txx.springboot.controller.dto.UserPasswordDTO;
 import com.txx.springboot.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import javax.mail.MessagingException;
+
 /**
  * <p>
  *  服务类
@@ -23,4 +25,8 @@ public interface IUserService extends IService<User> {
     void updatePassword(UserPasswordDTO userPasswordDTO);
 
     Page<User> findPage(Page<User> page, String username, String email, String address);
+
+    UserDTO loginEmail(UserDTO userDTO);
+
+    void sendEmailCode(String email, Integer type) throws MessagingException;
 }
