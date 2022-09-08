@@ -1,6 +1,7 @@
 package com.txx.springboot.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
@@ -18,13 +19,15 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-  @ApiModel(value = "Exam对象", description = "")
+@ApiModel(value = "Exam对象", description = "")
 public class Exam implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
       @TableId(value = "id", type = IdType.AUTO)
       private Integer id;
+
+      private Integer courseId;
 
       @ApiModelProperty("考试名称")
       private String name;
@@ -40,6 +43,9 @@ public class Exam implements Serializable {
 
       @ApiModelProperty("考试状态")
       private String state;
+
+      @TableField(exist = false)
+      private Boolean enable;
 
 
 }

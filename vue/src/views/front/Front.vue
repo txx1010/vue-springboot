@@ -6,7 +6,7 @@
         <div style="width: 60px">
           <img src="../../assets/logo1.png" alt="" style="width: 50px; position: relative; top: 5px; right: 0">
         </div>
-        <div style="flex: 1">欢迎来到济南大学选课系统</div>
+        <div style="flex: 1">欢迎来到济南大学教务系统</div>
       </div>
       <div style="flex: 1">
         <!--        导航菜单-->
@@ -37,6 +37,7 @@
             <el-menu-item index="2-3">消息中心</el-menu-item>
           </el-submenu>
           <el-menu-item index="/front/article" >文章列表</el-menu-item>
+          <el-menu-item index="/front/exam" >考试系统</el-menu-item>
           <el-menu-item index="4"><a href="http://jwgl9.ujn.edu.cn/jwglxt/xtgl/login_slogin.html?kickout=1" target="_blank">成绩管理</a></el-menu-item>
         </el-menu>
       </div>

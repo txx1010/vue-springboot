@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IExamPaperService extends IService<ExamPaper> {
 
+    void addPaper(ExamPaper examPaper);
 }

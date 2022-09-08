@@ -1,15 +1,6 @@
 <template>
   <div>
     <div style="margin: 10px 0">
-      <el-input style="width: 200px" placeholder="请输入名称" suffix-icon="el-icon-search" v-model="name"></el-input>
-      <!--      <el-input style="width: 200px" placeholder="请输入" suffix-icon="el-icon-message" class="ml-5" v-model="email"></el-input>-->
-      <!--      <el-input style="width: 200px" placeholder="请输入" suffix-icon="el-icon-position" class="ml-5" v-model="address"></el-input>-->
-      <el-button class="ml-5" type="primary" @click="load">搜索</el-button>
-      <el-button type="warning" @click="reset">重置</el-button>
-    </div>
-
-    <div style="margin: 10px 0">
-      <el-button type="primary" @click="handleAdd">新增 <i class="el-icon-circle-plus-outline"></i></el-button>
       <el-popconfirm
           class="ml-5"
           confirm-button-text='确定'
@@ -30,19 +21,21 @@
     <el-table :data="tableData" border stripe :header-cell-class-name="'headerBg'"  @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="id" label="ID" width="80" sortable></el-table-column>
-      <el-table-column prop="name" label="考试名称"></el-table-column>
-      <el-table-column prop="room" label="教室"></el-table-column>
-      <el-table-column prop="time" label="考试时间"></el-table-column>
-      <el-table-column prop="teacher" label="老师"></el-table-column>
-      <el-table-column prop="state" label="考试状态"></el-table-column>
-      <el-table-column label="设置考卷">
+      <el-table-column label="考试名称">
         <template v-slot="scope">
-          <el-button type="primary" @click="setPaper(scope.row.id)">设置</el-button>
+          <span v-if="exams && exams.length">{{ exams.find(v => v.id === scope.row.examId) ? exams.find(v => v.id === scope.row.examId).name : ''}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="所属课程">
+      <el-table-column label="学生">
         <template v-slot="scope">
-          <span v-if="courses && courses.length">{{ courses.find(v => v.id === scope.row.courseId) ? courses.find(v => v.id === scope.row.courseId).name : ''}}</span>
+          <span v-if="users && users.length">{{ users.find(v => v.id === scope.row.userId) ? users.find(v => v.id === scope.row.userId).nickname : ''}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="state" label="审核状态"></el-table-column>
+      <el-table-column label="审核" width="240">
+        <template v-slot="scope">
+          <el-button type="success" @click="changeState(scope.row, '审核通过')" >审核通过</el-button>
+          <el-button type="danger" @click="changeState(scope.row, '审核不通过')">审核不通过</el-button>
         </template>
       </el-table-column>
       <el-table-column label="操作"  width="180" align="center">
@@ -74,40 +67,22 @@
       </el-pagination>
     </div>
 
-    <el-dialog title="试卷" :visible.sync="dialogFormVisible1" width="30%" :close-on-click-modal="false">
-      <el-form label-width="100px" size="small" style="width: 90%">
-      <el-form-item label="试卷">
-        <el-select clearable v-model="form1.paperId" placeholder="请选择试卷" style="width: 100%">
-          <el-option v-for="item in papers"
-                     :key="item.id" :label="item.name" :value="item.id"></el-option>
-        </el-select>
-      </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible1 = false">取 消</el-button>
-        <el-button type="primary" @click="save1">确 定</el-button>
-      </div>
-    </el-dialog>
-
     <el-dialog title="信息" :visible.sync="dialogFormVisible" width="30%" :close-on-click-modal="false">
       <el-form label-width="100px" size="small" style="width: 90%">
-        <el-form-item label="考试名称">
+        <el-form-item label="订单编号">
+          <el-input v-model="form.no" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="名称">
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="教室">
-          <el-input v-model="form.room" autocomplete="off"></el-input>
+        <el-form-item label="订单时间">
+          <el-date-picker v-model="form.time" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期时间"></el-date-picker>
         </el-form-item>
-        <el-form-item label="考试时间">
-          <el-date-picker v-model="form.time" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" placeholder="选择日期时间"></el-date-picker>
+        <el-form-item label="支付状态">
+          <el-input v-model="form.state" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="老师">
-          <el-input v-model="form.teacher" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="课程">
-          <el-select clearable v-model="form.courseId" placeholder="请选择" style="width: 100%">
-            <el-option v-for="item in courses"
-                       :key="item.id" :label="item.name" :value="item.id"></el-option>
-          </el-select>
+        <el-form-item label="订单总价">
+          <el-input v-model="form.total" autocomplete="off"></el-input>
         </el-form-item>
 
       </el-form>
@@ -121,7 +96,7 @@
 
 <script>
 export default {
-  name: "Exam",
+  name: "Sign",
   data() {
     return {
       tableData: [],
@@ -130,31 +105,24 @@ export default {
       pageSize: 10,
       name: "",
       form: {},
-      form1: {},
       dialogFormVisible: false,
-      dialogFormVisible1: false,
       multipleSelection: [],
       user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {},
-      courses:[],
-      papers:[]
+      exams:[],
+      users:[]
     }
   },
   created() {
     this.load()
   },
   methods: {
-    setPaper(examId){
-      this.form1 = { examId: examId}
-      this.request.get("/examPaper/exam/" + examId).then(res =>{
-        if(res.data) {
-          this.form1.paperId = res.data.paperId
-          this.dialogFormVisible1 = true
-        }
-      })
-
+    changeState(row, state){
+      this.form = JSON.parse(JSON.stringify(row))
+      this.form.state = state;
+      this.save();
     },
     load() {
-      this.request.get("/exam/page", {
+      this.request.get("/sign/page", {
         params: {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
@@ -164,29 +132,22 @@ export default {
         this.tableData = res.data.records
         this.total = res.data.total
       })
-      this.request.get("/course").then( res =>{
-        this.courses = res.data
+
+      this.request.get("/exam").then(res =>{
+        this.exams = res.data
       })
-      this.request.get("/paper").then( res =>{
-        this.papers = res.data
+
+      this.request.get("/user").then(res =>{
+        this.users = res.data
       })
+
     },
     save() {
-      this.request.post("/exam", this.form).then(res => {
+      this.request.post("/sign", this.form).then(res => {
         if (res.code === '200') {
-          this.$message.success("设置成功")
+          this.$message.success("操作成功")
           this.dialogFormVisible = false
           this.load()
-        } else {
-          this.$message.error("设置失败")
-        }
-      })
-    },
-    save1() {
-      this.request.post("/examPaper", this.form1).then(res => {
-        if (res.code === '200') {
-          this.$message.success("保存成功")
-          this.dialogFormVisible1 = false
         } else {
           this.$message.error("保存失败")
         }
@@ -217,7 +178,7 @@ export default {
       })
     },
     del(id) {
-      this.request.delete("/exam/" + id).then(res => {
+      this.request.delete("/sign/" + id).then(res => {
         if (res.code === '200') {
           this.$message.success("删除成功")
           this.load()
@@ -236,7 +197,7 @@ export default {
         return
       }
       let ids = this.multipleSelection.map(v => v.id)  // [{}, {}, {}] => [1,2,3]
-      this.request.post("/exam/del/batch", ids).then(res => {
+      this.request.post("/sign/del/batch", ids).then(res => {
         if (res.code === '200') {
           this.$message.success("批量删除成功")
           this.load()
@@ -269,7 +230,7 @@ export default {
       window.open(url)
     },
     exp() {
-      window.open("http://localhost:9090/exam/export")
+      window.open("http://localhost:9090/sign/export")
     },
     handleExcelImportSuccess() {
       this.$message.success("导入成功")
