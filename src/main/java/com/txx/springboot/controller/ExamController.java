@@ -79,6 +79,7 @@ public class ExamController {
         Page<Exam> page = examService.page(new Page<>(pageNum, pageSize), queryWrapper);
         for (Exam exam : page.getRecords()){
             setState(exam);
+            examService.updateById(exam);
         }
         return Result.success(page);
     }
@@ -108,6 +109,7 @@ public class ExamController {
             });
 
             setState(exam);
+            examService.updateById(exam);
         }
         return Result.success(page);
     }
@@ -115,10 +117,11 @@ public class ExamController {
         String time = exam.getTime();
         DateTime dateTime = DateUtil.parse(time, "yyyy-MM-dd HH:mm");
         Date now = new Date();
-        if(DateUtil.compare(dateTime , now) <0){
-            exam.setState("已结束");
+        if(DateUtil.compare(dateTime , now) <=0 && DateUtil.compare(DateUtil.offsetMinute(dateTime, exam.getDuration()), now) >= 0){
+            //考试的开始时间在当前时间之后，并且开始的结束时间在当前的时间之前
+            exam.setState("进行中");
         }
-        else if(DateUtil.compare(dateTime , DateUtil.offsetHour(now , 2)) <= 0){
+        else if(DateUtil.compare(dateTime , now) > 0){
             exam.setState("进行中");
         } else {
             exam.setState("未开始");

@@ -33,6 +33,7 @@
       <el-table-column prop="name" label="考试名称"></el-table-column>
       <el-table-column prop="room" label="教室"></el-table-column>
       <el-table-column prop="time" label="考试时间"></el-table-column>
+      <el-table-column prop="duration" label="持续时间（分）"></el-table-column>
       <el-table-column prop="teacher" label="老师"></el-table-column>
       <el-table-column prop="state" label="考试状态"></el-table-column>
       <el-table-column label="设置考卷">
@@ -99,6 +100,9 @@
         </el-form-item>
         <el-form-item label="考试时间">
           <el-date-picker v-model="form.time" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" placeholder="选择日期时间"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="持续时间（分）">
+          <el-input v-model="form.duration" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="老师">
           <el-input v-model="form.teacher" autocomplete="off"></el-input>

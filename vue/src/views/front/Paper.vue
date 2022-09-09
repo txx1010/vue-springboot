@@ -31,13 +31,13 @@ export default {
   name: "Paper",
   data(){
     return{
-      questions: []
+      questions: [] ,
+      paperId: this.$route.query.paperId
     }
   },
   created() {
-    this.request.get("/paper/view/"  + paperId).then(res =>{
+    this.request.get("/paper/view/"  + this.paperId).then(res =>{
       this.questions = res.data
-      this.dialogFormVisible2 = true
     })
   }
 }
