@@ -122,9 +122,9 @@ public class ExamController {
             exam.setState("进行中");
         }
         else if(DateUtil.compare(dateTime , now) > 0){
-            exam.setState("进行中");
-        } else {
             exam.setState("未开始");
+        } else {
+            exam.setState("已结束");
         }
     }
 }

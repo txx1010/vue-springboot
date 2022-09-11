@@ -36,14 +36,7 @@ export default {
   },
   methods: {
     doPaper(examId){
-      this.form1 = { examId: examId}
-      this.request.get("/examPaper/exam/" + examId).then(res =>{
-            if(res.data) {
-              this.$router.push('/front/paper?paperId=' + res.data.paperId)
-            } else {
-              this.$message.error("考试尚未出卷，请联系考官")
-            }
-    })
+      this.$router.push('/front/paper?examId=' + examId)
     },
     sign(examId){
       let form = {userId: this.user.id, examId: examId}

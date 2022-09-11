@@ -95,7 +95,8 @@ export const setRouters = () =>{
       //拼装动态路由
       const manageRoute = {path: '/', name:'Manage',component: () => import('../views/Manage.vue'), redirect:"/home", children:[
           { path: 'person', name: '个人信息', component: () => import('../views/Person.vue')},
-          { path: 'password', name: '修改密码', component: () => import('../views/Password.vue')}
+          { path: 'password', name: '修改密码', component: () => import('../views/Password.vue')},
+          { path: 'handlePaper', name: '阅卷', component: () => import('../views/HandlePaper.vue')}
         ]}
       const menus = JSON.parse(storeMenus)
       menus.forEach(item =>{
