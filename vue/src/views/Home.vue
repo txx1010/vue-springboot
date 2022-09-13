@@ -36,6 +36,7 @@
             <div>Mybatis/Mybatis-plus</div>
             <div>JWT</div>
             <div>websocket</div>
+            <div>Alipay</div>
           </el-col>
           <el-col :span="12" style="line-height: 30px">
             <b>前端</b>

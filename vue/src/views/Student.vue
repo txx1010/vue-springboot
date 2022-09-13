@@ -31,17 +31,16 @@
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="id" label="ID" width="80"></el-table-column>
       <el-table-column prop="username" label="用户名" width="140"></el-table-column>
-      <el-table-column prop="role" label="角色">
-        <template slot-scope="scope">
-          <el-tag type="primary" v-if="scope.row.role === 'ROLE_ADMIN'">管理员</el-tag>
-          <el-tag type="warning" v-if="scope.row.role === 'ROLE_TEACHER'">老师</el-tag>
-          <el-tag type="success" v-if="scope.row.role === 'ROLE_STUDENT'">学生</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="nickname" label="昵称" width="120"></el-table-column>
+      <el-table-column prop="nickname" label="姓名" width="120"></el-table-column>
       <el-table-column prop="email" label="邮箱"></el-table-column>
       <el-table-column prop="phone" label="电话"></el-table-column>
       <el-table-column prop="address" label="地址"></el-table-column>
+      <el-table-column prop="grade" label="年级"></el-table-column>
+      <el-table-column label="专业">
+        <template v-slot="scope">
+          <span >{{ majors.find(v => v.id === scope.row.majorId) ? majors.find(v => v.id === scope.row.majorId).name : ''}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作"  width="200" align="center">
         <template slot-scope="scope">
 <!--          <el-button type="primary" @click="lookCourse(scope.row.courses)" v-if="scope.row.role === 'ROLE_TEACHER'">查看教授课程 <i class="el-icon-document"></i></el-button>-->
@@ -73,7 +72,7 @@
       </el-pagination>
     </div>
 
-    <el-dialog title="用户信息" :visible.sync="dialogFormVisible" width="30%" >
+    <el-dialog title="学生信息" :visible.sync="dialogFormVisible" width="30%" >
       <el-form label-width="80px" size="small">
         <el-form-item label="用户名">
           <el-input v-model="form.username" autocomplete="off"></el-input>
@@ -83,7 +82,7 @@
             <el-option v-for="item in roles" :key="item.name" :label="item.name" :value="item.flag"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="昵称">
+        <el-form-item label="姓名">
           <el-input v-model="form.nickname" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="邮箱">
@@ -94,6 +93,18 @@
         </el-form-item>
         <el-form-item label="地址">
           <el-input v-model="form.address" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="专业">
+          <el-select clearable v-model="form.majorId" placeholder="请选择专业" style="width: 100%">
+            <el-option v-for="item in majors"
+                       :key="item.id" :label="item.name" :value="item.id"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="年级">
+          <el-select clearable v-model="form.grade" placeholder="请选择年级" style="width: 100%">
+            <el-option v-for="item in ['大一','大二','大三','大四']"
+                       :key="item" :label="item" :value="item"></el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -122,7 +133,7 @@
 import {serverIp} from "../../public/config";
 
 export default {
-  name: "User",
+  name: "Student",
   data() {
     return {
       serverIp: serverIp,
@@ -137,6 +148,7 @@ export default {
       dialogFormVisible: false,
       multipleSelection: [],
       roles: [],
+      majors: [],
       courses: [],
       vis: false,
       stuCourses: [],
@@ -161,8 +173,7 @@ export default {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
           username: this.username,
-          email: this.email,
-          address: this.address,
+          role: 'ROLE_STUDENT'
         }
       }).then(res => {
 
@@ -174,8 +185,13 @@ export default {
       this.request.get("/role").then(res => {
         this.roles = res.data
       })
+
+      this.request.get("/major").then(res => {
+        this.majors = res.data
+      })
     },
     save() {
+      this.form.role = 'ROLE_STUDENT'
       this.request.post("/user", this.form).then(res => {
         if (res.code === '200') {
           this.$message.success("保存成功")

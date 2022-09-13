@@ -19,5 +19,6 @@ public class UserDTO {
     private String avatarUrl;
     private String token;
     private String role;
+    private Integer majorId;
     private List<Menu> menus;
 }

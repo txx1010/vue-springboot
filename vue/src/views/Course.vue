@@ -16,7 +16,7 @@
           title="您确定批量删除这些数据吗？"
           @confirm="delBatch"
       >
-        <el-button type="danger" slot="reference">批量删除 <i class="el-icon-remove-outline"></i></el-button>
+        <el-button type="danger" slot="reference" v-if="user.role === 'ROLE_ADMIN'">批量删除 <i class="el-icon-remove-outline"></i></el-button>
       </el-popconfirm>
 
     </div>
@@ -25,18 +25,21 @@
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="id" label="ID" width="80"></el-table-column>
       <el-table-column prop="name" label="课程名称"></el-table-column>
-      <el-table-column prop="score" label="文件类型"></el-table-column>
+      <el-table-column prop="no" label="编号"></el-table-column>
+      <el-table-column prop="score" label="学分"></el-table-column>
       <el-table-column prop="times" label="课时"></el-table-column>
       <el-table-column prop="teacher" label="授课老师"></el-table-column>
-      <el-table-column label="启用">
+      <el-table-column prop="room" label="教室"></el-table-column>
+      <el-table-column prop="type" label="是否必修"></el-table-column>
+<!--      <el-table-column label="启用">-->
+<!--        <template slot-scope="scope">-->
+<!--          <el-switch v-model="scope.row.state" active-color="#13ce66" inactive-color="#ccc"-->
+<!--                     @change="changeEnable(scope.row)"></el-switch>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+      <el-table-column label="操作" width="200" align="center">
         <template slot-scope="scope">
-          <el-switch v-model="scope.row.state" active-color="#13ce66" inactive-color="#ccc"
-                     @change="changeEnable(scope.row)"></el-switch>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" width="280" align="center">
-        <template slot-scope="scope">
-          <el-button type="primary" @click="selectCourse(scope.row.id)">选课</el-button>
+<!--          <el-button type="primary" @click="selectCourse(scope.row.id)">选课</el-button>-->
           <el-button type="success" @click="handleEdit(scope.row)" v-if="user.role === 'ROLE_ADMIN'">编辑 <i class="el-icon-edit"></i></el-button>
           <el-popconfirm
               class="ml-5"
@@ -70,6 +73,9 @@
         <el-form-item label="名称">
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item label="编号">
+          <el-input v-model="form.no" autocomplete="off"></el-input>
+        </el-form-item>
         <el-form-item label="学分">
           <el-input v-model="form.score" autocomplete="off"></el-input>
         </el-form-item>
@@ -81,9 +87,16 @@
             <el-option v-for="item in teachers" :key="item.id" :label="item.nickname" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="教室">
+          <el-input v-model="form.room" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="是否必修">
+          <el-radio v-model="form.type" label="是">是</el-radio>
+          <el-radio v-model="form.type" label="否">否</el-radio>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button @click="dialogFormVisible1 = false">取 消</el-button>
         <el-button type="primary" @click="save">确 定</el-button>
       </div>
     </el-dialog>

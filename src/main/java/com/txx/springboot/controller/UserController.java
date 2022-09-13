@@ -201,21 +201,29 @@ import org.springframework.web.multipart.MultipartFile;
                                    @RequestParam Integer pageSize,
                                    @RequestParam(defaultValue = "") String username,
                                    @RequestParam(defaultValue = "") String email,
-                                   @RequestParam(defaultValue = "")String address) {
-//                QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-//                if(!"".equals(username)){
-//                        queryWrapper.like("username",username);
-//                }
-//                if (!"".equals(email)){
-//                        queryWrapper.like("email",email);
-//                }
-//                if (!"".equals(address)){
-//                        queryWrapper.like("address",address);
-//                }
-//                User currentUser = TokenUtils.getCurrentUser();
-//                System.out.println("获取当前用户信息==================================================================="+currentUser.getNickname());
+                                   @RequestParam(defaultValue = "")String address,
+                                   @RequestParam(defaultValue = "") String role) {
+                QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+                if(!"".equals(username)){
+                        queryWrapper.like("username",username);
+                }
+                if (!"".equals(email)){
+                        queryWrapper.like("email",email);
+                }
+                if (!"".equals(address)){
+                        queryWrapper.like("address",address);
+                }
+                if (!"".equals(role)){
+                        queryWrapper.like("role",role);
+                }
+                User currentUser = TokenUtils.getCurrentUser();
+                System.out.println("获取当前用户信息==================================================================="+currentUser.getNickname());
 //                queryWrapper.orderByDesc("id");
-                return Result.success(userService.findPage(new Page<>(pageNum, pageSize), username,email,address));
+                Page<User> page = userService.page(new Page<>(pageNum, pageSize), queryWrapper);
+                return Result.success(page);
+
+                 //userService.findPage(new Page<>(pageNum, pageSize), username,email,address,role)可以返回多返回俩collections，分别是教授授课的课程和学生选择的课程
+//                return Result.success(userService.findPage(new Page<>(pageNum, pageSize), username,email,address,role));
         }
         /**
          * 导出接口

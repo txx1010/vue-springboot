@@ -12,6 +12,8 @@
         <result column="create_time" property="createTime" />
         <result column="avatar_url" property="avatarUrl" />
         <result column="role" property="role" />
+        <result column="major_id" property="majorId" />
+        <result column="grade" property="grade" />
         <collection property="courses" javaType="java.util.ArrayList" ofType="com.txx.springboot.entity.Course">
             <result column="teacherCourseName" property="name" />
             <result column="teacherScore" property="score" />
@@ -39,6 +41,9 @@
             </if>
             <if test="address != null and address != ''">
                 and sys_user.address like concat('%', #{address} ,'%')
+            </if>
+            <if test="role != null and role != ''">
+                and sys_user.role like concat('%', #{role} ,'%')
             </if>
         </where>
 

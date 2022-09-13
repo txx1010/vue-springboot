@@ -28,6 +28,9 @@ public class Course implements Serializable {
       @TableId(value = "id", type = IdType.AUTO)
       private Integer id;
 
+      @ApiModelProperty("编号")
+      private Integer no;
+
       @ApiModelProperty("课程名称")
       private String name;
 
@@ -37,11 +40,17 @@ public class Course implements Serializable {
       @ApiModelProperty("上课时间")
       private String times;
 
-      @ApiModelProperty("是否开课")
-      private Boolean state;
+      @ApiModelProperty("教室")
+      private String room;
+
+//      @ApiModelProperty("是否开课")
+//      private Boolean state;
+
+      @ApiModelProperty("是否必修")
+      private String type;
 
       @ApiModelProperty("授课老师id")
-      private Integer teacherId;
+      private String teacherId;
 
       @TableField(exist = false)
       private String teacher;

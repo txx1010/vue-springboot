@@ -121,8 +121,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public Page<User> findPage(Page<User> page, String username, String email, String address) {
-        return  userMapper.findPage(page,username,email,address);
+    public Page<User> findPage(Page<User> page, String username, String email, String address , String role) {
+        return  userMapper.findPage(page,username,email,address,role);
     }
 
     // 邮箱验证

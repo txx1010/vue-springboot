@@ -24,7 +24,7 @@ public interface IUserService extends IService<User> {
 
     void updatePassword(UserPasswordDTO userPasswordDTO);
 
-    Page<User> findPage(Page<User> page, String username, String email, String address);
+    Page<User> findPage(Page<User> page, String username, String email, String address, String role);
 
     UserDTO loginEmail(UserDTO userDTO);
 
