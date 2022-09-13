@@ -110,10 +110,19 @@ export default {
       }
     }
   },
-  // mounted() {
-  //   // 重置路由
-  //   this.refreshCode()
-  // },
+  mounted() {
+    // 验证码
+    // this.refreshCode()
+    // 获取地理位置
+    var geolocation = new BMapGL.Geolocation();
+    geolocation.getCurrentPosition(function(r){
+      if(this.getStatus() == BMAP_STATUS_SUCCESS){
+        const province = r.address.province
+        const city = r.address.city
+        localStorage.setItem("location", province + city)
+      }
+    });
+  },
   methods: {
     sendEmailCode(type) {
       let email;
