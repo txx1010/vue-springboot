@@ -6,6 +6,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.Quarter;
 import cn.hutool.core.lang.TypeReference;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
 import com.txx.springboot.common.Constants;
 import com.txx.springboot.common.Result;
@@ -42,6 +43,12 @@ public class EchartsController {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
+    //通过后台请求就不会出现跨域的错误
+    @AuthAccess
+    @GetMapping("/epidemic")
+    public String epidemic() {
+        return HttpUtil.get("https://c.m.163.com/ug/api/wuhan/app/data/list-total?t=" + System.currentTimeMillis());
+    }
 
     @GetMapping("/example")
     public Result get(){
