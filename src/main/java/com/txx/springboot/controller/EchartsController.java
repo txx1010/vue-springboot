@@ -44,7 +44,6 @@ public class EchartsController {
     private StringRedisTemplate stringRedisTemplate;
 
     //通过后台请求就不会出现跨域的错误
-    @AuthAccess
     @GetMapping("/epidemic")
     public String epidemic() {
         return HttpUtil.get("https://c.m.163.com/ug/api/wuhan/app/data/list-total?t=" + System.currentTimeMillis());
