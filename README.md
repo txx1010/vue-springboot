@@ -1,37 +1,108 @@
-# vue-study
+# vue-springboot xx大学教务管理系统
 
 #### 介绍
-这是我的第一个vue项目
 
-#### 软件架构
-软件架构说明
+hello！各位小伙伴们！
+
+这是一款教务管理系统，使用到的技术栈如下：
+
+前端：Vue2、Vue-Router、VueX、ElementUI、Axios、Ecahrts、Websocket、MavonEditor
+
+后端：SpringBoot2、Mysql、Hutool、Poi、Lombok、Mybatis/Mybatis-plus、JWT、Websocket、Redis、Alipay、Email
+
+#### 系统功能
+
+系统分为前台用户界面和后台系统管理：
+
+系统有三种身份：管理员，教师和学生。 （管理员可以创建新的用户角色并为角色指定对应的系统功能）
+
+1）前台用户界面 
+用户中心、用户注册、用户登录、找回密码、浏览首页、新闻搜索、 查看新闻明细、发布评论、报名考试、参与考试、提交考卷、进入后台
+
+2）后台系统管理
+
+- 系统主页：后台管理系统的总介绍。
+
+- 个人中心：用户可以修改个人信息，上传或修改头像，修改密码，退出登录。
+
+- 疫情打卡：学生在打开浏览器定位的前提下使用此功能定位打卡。
+
+- 课程表：学生可查看自己的专业课程表。
+
+- 聊天交流：用户可以通过此功能在线交流 。
+
+- 系统管理（管理员）
+  
+  1. 用户管理：用户列表、用户信息的增删改查以及导入导出。
+  
+  2. 角色管理：角色列表、角色信息的增删改查、为每种角色分配后台管理系统的菜单和功能。
+  
+  3. 菜单管理：对后台管理系统左侧菜单栏的菜单执行增删改查，设置菜单项的顺序、图标以及子菜单等。
+  
+  4. 文件管理：文件的上传、下载、预览、搜索和删除。
+  
+  5. 新闻管理：前台用户界面新闻的增删改查和预览。
+
+- 教务管理（教师和管理员）
+  
+  1. 学生管理：学生列表、学生信息的增删改查以及导入导出、分配学生的专业和年级。
+  
+  2. 专业管理：专业列表、专业信息的增删改查以及导入导出、分配专业的辅导员、分配专业的课程。
+  
+  3. 课程管理：课程列表、课程信息的增删改查以及导入导出、分配课程的教师。
+  
+  4. 打卡管理：管理已打卡的学生信息并添加备注。
+
+- 图书管理 
+  
+  1. 图书购买：管理员可对图书信息增删改查，教师和学生可以点击购买。
+  
+  2. 订单支付：用户可以对已点击购买的订单使用支付宝支付。
+
+- 考试管理（教师和管理员）
+  
+  1. 考试列表：教师和管理员可以对考试信息修改删除查询；可以发布考试到系统前台供学生报名和参加考试；可以为考试分配考卷。
+  
+  2. 报名审核：管理员可以对前台学生传来的考试报名信息修改和删除，对考试信息进行审核，审核不通过的学生无法参与考试。
+  
+  3. 题库管理：教师和管理员对题库进行管理，对题目信息增删改查；题目分为选择、判断、问答三种类型。
+  
+  4. 试卷管理：教师和管理员可以对试卷增删改查；试卷题目绑定题库，教师可以使用自动或手动的方式组卷。
+  
+  5. 阅卷管理：教师可以对前台学生提交的试卷自动阅卷；选择题和判断题可以自动阅卷，问答题由教师打分，总分自动生成。
+
+- 疫情地图：可以查看全国疫情的实时数据和中国疫情地图。
+
+- 数据报表：管理员可根据柱状图和饼状图直观查看用户数据。
+
+#### 部分截图
+
+![](https://raw.githubusercontent.com/txx1010/image/main/picgo/404.png)
 
 
-#### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1. xxxx
+2. xxxx
+3. xxxx
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1. xxxx
+2. xxxx
+3. xxxx
 
 #### 参与贡献
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
+1. Fork 本仓库
+2. 新建 Feat_xxx 分支
+3. 提交代码
+4. 新建 Pull Request
 
 #### 特技
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
+2. Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
+3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
+4. [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
+5. Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
+6. Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)

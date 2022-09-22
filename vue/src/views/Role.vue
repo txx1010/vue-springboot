@@ -95,7 +95,7 @@
 
       >
         <span class="custom-tree-node" slot-scope="{ node, data }">
-        <span><i :class="data.icon"/>{{ data.name }}</span>
+        <span><i :class="data.icon"/> {{ data.name }}</span>
         </span>
       </el-tree>
       <div slot="footer" class="dialog-footer">

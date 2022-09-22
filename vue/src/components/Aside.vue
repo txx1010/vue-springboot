@@ -1,5 +1,5 @@
 <template>
-  <el-menu :default-openeds="opens" style="min-height: 100%;overflow-x: hidden"
+  <el-menu :default-openeds=[] style="min-height: 100%;overflow-x: hidden"
            background-color="rgb(48, 65, 86)"
            text-color="#fff"
            active-text-color="#ffd04b"
@@ -9,7 +9,7 @@
   >
     <div style="height:60px;text-align: center;line-height: 60px">
       <img src="../assets/logo.png" alt="" style="width: 20px;position: relative;top:5px;margin-right: 5px">
-      <b style="color: white" v-show="logoTextShow">后台管理系统</b>
+      <b style="color: white" v-show="logoTextShow">教务管理系统</b>
     </div>
     <div v-for="item in menus" :key="item.id">
       <div v-if="item.path">

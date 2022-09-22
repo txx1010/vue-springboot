@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div style="height: 60px; line-height: 60px; font-size: 20px; padding-left: 50px; color: white;
-      background-color: rgba(0,0,0,0.2)">管理系统</div>
+      background-color: rgba(0,0,0,0.2)">教务系统</div>
 
     <div style="margin: 100px auto; background: white; width: 500px; border-radius: 10px; overflow: hidden">
       <el-tabs type="card" v-model="activeName" >
@@ -70,7 +70,7 @@
           <el-input size="medium" v-model="pass.email" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="验证码">
-          <el-input size="medium"  style="width: 250px" v-model="pass.code"></el-input>
+          <el-input size="medium"  style="width: 200px" v-model="pass.code"></el-input>
           <el-button type="primary" size="medium" class="ml-5" @click="sendEmailCode(2)">获取验证码</el-button>
         </el-form-item>
       </el-form>
@@ -230,7 +230,8 @@ export default {
 <style>
 .wrapper {
   height: 100vh;
-  background-image: linear-gradient(to bottom right, #4169E1 , 	#87CEFA);
+  /*background-image: linear-gradient(to bottom right, #4169E1 , 	#87CEFA);*/
+  background-image: linear-gradient(to bottom right, #FC466B, #3F5EFB);
   overflow: hidden;
 }
 </style>

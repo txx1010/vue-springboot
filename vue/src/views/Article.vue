@@ -132,6 +132,7 @@ export default {
       let $vm = this.$refs.md
       // 第一步.将图片上传到服务器.
       const formData = new FormData();
+
       formData.append('file', $file);
       axios({
         url: 'http://localhost:9090/file/upload',

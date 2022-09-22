@@ -36,8 +36,8 @@
             <el-menu-item index="/front/item1">学分查询</el-menu-item>
             <el-menu-item index="2-3">消息中心</el-menu-item>
           </el-submenu>
-          <el-menu-item index="/front/article" >文章列表</el-menu-item>
-          <el-menu-item index="/front/exam" >考试系统</el-menu-item>
+          <el-menu-item index="/front/article" >新闻列表</el-menu-item>
+          <el-menu-item index="/front/exam" v-if="user.role === 'ROLE_STUDENT'">考试系统</el-menu-item>
           <el-menu-item index="4"><a href="http://jwgl9.ujn.edu.cn/jwglxt/xtgl/login_slogin.html?kickout=1" target="_blank">成绩管理</a></el-menu-item>
         </el-menu>
       </div>

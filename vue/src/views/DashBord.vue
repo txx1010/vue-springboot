@@ -3,23 +3,23 @@
     <el-row :gutter="10" style="margin-bottom: 60px">
       <el-col :span="6">
         <el-card style="color: #409EFF">
-          <div><i class="el-icon-user-solid" /> 用户总数</div>
+          <div><i class="el-icon-user-solid" /> 学生总数</div>
           <div style="padding: 10px 0; text-align: center; font-weight: bold">
-            100
+            10000
           </div>
         </el-card>
       </el-col>
       <el-col :span="6">
         <el-card style="color: #F56C6C">
-          <div><i class="el-icon-money" /> 销售总量</div>
+          <div><i class="el-icon-money" /> 教师总数</div>
           <div style="padding: 10px 0; text-align: center; font-weight: bold">
-            ￥ 1000000
+            200
           </div>
         </el-card>
       </el-col>
       <el-col :span="6">
         <el-card style="color: #67C23A">
-          <div><i class="el-icon-bank-card" /> 收益总额</div>
+          <div><i class="el-icon-bank-card" /> 教育经费</div>
           <div style="padding: 10px 0; text-align: center; font-weight: bold">
             ￥ 300000
           </div>
@@ -27,9 +27,9 @@
       </el-col>
       <el-col :span="6">
         <el-card style="color: #E6A23C">
-          <div><i class="el-icon-s-shop" /> 门店总数</div>
+          <div><i class="el-icon-s-shop" /> 教室总数</div>
           <div style="padding: 10px 0; text-align: center; font-weight: bold">
-            20
+            500
           </div>
         </el-card>
       </el-col>
@@ -60,7 +60,7 @@ export default {
   mounted() {  // 页面元素渲染之后再触发
     var option = {
       title: {
-        text: '各季度会员数量统计',
+        text: '各季度用户数量统计',
         subtext: '趋势图',
         left: 'center'
       },
@@ -80,22 +80,22 @@ export default {
       },
       series: [
         {
-          name: "星巴克",
+          name: "已注册用户",
           data: [],
           type: 'bar'
         },
         {
-          name: "星巴克",
+          name: "已注册用户",
           data: [],
           type: 'line'
         },
         {
-          name: "瑞幸咖啡",
+          name: "未注册",
           data: [],
           type: 'bar'
         },
         {
-          name: "瑞幸咖啡",
+          name: "未注册",
           data: [],
           type: 'line'
         }
@@ -106,7 +106,7 @@ export default {
 
     var pieOption = {
       title: {
-        text: '各季度会员数量统计',
+        text: '各季度用户数量统计',
         subtext: '比例图',
         left: 'center'
       },
@@ -120,7 +120,7 @@ export default {
       },
       series: [
         {
-          name: "星巴克",
+          name: "已注册用户",
           type: 'pie',
           radius: '55%',
           center: ['25%', '70%'],
@@ -146,7 +146,7 @@ export default {
           }
         },
         {
-          name: "瑞幸咖啡",
+          name: "未注册",
           type: 'pie',
           radius: '50%',
           center: ['75%', '50%'],
