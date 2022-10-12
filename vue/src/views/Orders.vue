@@ -9,7 +9,7 @@
     </div>
 
     <div style="margin: 10px 0">
-      <el-button type="primary" @click="handleAdd">新增 <i class="el-icon-circle-plus-outline"></i></el-button>
+      <el-button type="primary" @click="handleAdd"  v-if="user.role === 'ROLE_ADMIN'">新增 <i class="el-icon-circle-plus-outline"></i></el-button>
       <el-popconfirm
           class="ml-5"
           confirm-button-text='确定'
@@ -44,9 +44,9 @@
           <el-button type="danger" @click="returnPay(scope.row)" :disabled="scope.row.state !== '已支付'">退款</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="操作"  width="180" align="center">
+      <el-table-column label="操作"  width="180" align="center" >
         <template slot-scope="scope">
-          <el-button type="success" @click="handleEdit(scope.row)">编辑 <i class="el-icon-edit"></i></el-button>
+          <el-button type="success" @click="handleEdit(scope.row)"  v-if="user.role === 'ROLE_ADMIN'">编辑 <i class="el-icon-edit"></i></el-button>
           <el-popconfirm
               class="ml-5"
               confirm-button-text='确定'
@@ -130,7 +130,7 @@ export default {
         if(res.code === '200') {
           this.$message.success("退款成功")
         }  else {
-          this.$message.error(res.msg)
+          this.$message.error("退款失败")
         }
         this.load()
       })

@@ -78,7 +78,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="选课" :visible.sync="dialogFormVisible1" width="50%" :close-on-click-modal="false">
+    <el-dialog title="排课" :visible.sync="dialogFormVisible1" width="50%" :close-on-click-modal="false">
       <div style="margin-bottom: 10px">
         <el-button type="primary" @click="handleAdd1">新增 <i class="el-icon-circle-plus-outline"></i></el-button>
       </div>

@@ -24,7 +24,10 @@
           <router-link to="/password">修改密码</router-link>
         </el-dropdown-item>
         <el-dropdown-item style="font-size: 14px; padding: 5px 0">
-          <span style="text-decoration: none" @click="logout">退出</span>
+          <router-link to="/front/home">返回前台</router-link>
+        </el-dropdown-item>
+        <el-dropdown-item style="font-size: 14px; padding: 5px 0">
+          <span style="text-decoration: none" @click="logout">退出登录</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>

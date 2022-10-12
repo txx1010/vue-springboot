@@ -1,6 +1,6 @@
 # vue-springboot xx大学教务管理系统
 
-#### 介绍
+#### 介绍 
 
 hello！各位小伙伴们！
 
@@ -8,7 +8,7 @@ hello！各位小伙伴们！
 
 前端：Vue2、Vue-Router、VueX、ElementUI、Axios、Ecahrts、Websocket、MavonEditor
 
-后端：SpringBoot2、Mysql、Hutool、Poi、Lombok、Mybatis/Mybatis-plus、JWT、Websocket、Redis、Alipay、Email
+后端：SpringBoot2、Mysql、Hutool、Poi、Lombok、Mybatis/Mybatis-plus、swagger、JWT、Websocket、Redis、Alipay、Email
 
 #### 系统功能
 
@@ -16,7 +16,8 @@ hello！各位小伙伴们！
 
 系统有三种身份：管理员，教师和学生。 （管理员可以创建新的用户角色并为角色指定对应的系统功能）
 
-1）前台用户界面 
+1）前台用户界面
+
 用户中心、用户注册、用户登录、找回密码、浏览首页、新闻搜索、 查看新闻明细、发布评论、报名考试、参与考试、提交考卷、进入后台
 
 2）后台系统管理
@@ -33,11 +34,11 @@ hello！各位小伙伴们！
 
 - 系统管理（管理员）
   
-  1. 用户管理：用户列表、用户信息的增删改查以及导入导出。
+  1. 用户管理：用户列表、用户信息的增删改查以及导入导出、分配用户角色。
   
   2. 角色管理：角色列表、角色信息的增删改查、为每种角色分配后台管理系统的菜单和功能。
   
-  3. 菜单管理：对后台管理系统左侧菜单栏的菜单执行增删改查，设置菜单项的顺序、图标以及子菜单等。
+  3. 菜单管理：后台管理系统左侧菜单栏菜单的增删改查，设置菜单项的顺序、图标以及子菜单等。
   
   4. 文件管理：文件的上传、下载、预览、搜索和删除。
   
@@ -55,9 +56,9 @@ hello！各位小伙伴们！
 
 - 图书管理 
   
-  1. 图书购买：管理员可对图书信息增删改查，教师和学生可以点击购买。
+  1. 图书购买：管理员可对图书信息增删改查，教师和学生可以点击购买，购买后加入订单信息。
   
-  2. 订单支付：用户可以对已点击购买的订单使用支付宝支付。
+  2. 订单支付：用户可以对已点击购买的订单使用支付宝沙箱支付或对已支付的订单退款。
 
 - 考试管理（教师和管理员）
   
@@ -65,7 +66,7 @@ hello！各位小伙伴们！
   
   2. 报名审核：管理员可以对前台学生传来的考试报名信息修改和删除，对考试信息进行审核，审核不通过的学生无法参与考试。
   
-  3. 题库管理：教师和管理员对题库进行管理，对题目信息增删改查；题目分为选择、判断、问答三种类型。
+  3. 题库管理：教师和管理员对题库进行管理，对题目信息增删改查，题目绑定课程；题目分为选择、判断、问答三种类型。
   
   4. 试卷管理：教师和管理员可以对试卷增删改查；试卷题目绑定题库，教师可以使用自动或手动的方式组卷。
   
@@ -76,33 +77,12 @@ hello！各位小伙伴们！
 - 数据报表：管理员可根据柱状图和饼状图直观查看用户数据。
 
 #### 部分截图
+程序运行的部分截图在image文件夹下
 
-![](https://raw.githubusercontent.com/txx1010/image/main/picgo/404.png)
+#### 致谢
+感谢csdn博主 "程序员青戈"
 
+#### 支持作者
+小小的支持一下作者吧~
 
-
-1. xxxx
-2. xxxx
-3. xxxx
-
-#### 使用说明
-
-1. xxxx
-2. xxxx
-3. xxxx
-
-#### 参与贡献
-
-1. Fork 本仓库
-2. 新建 Feat_xxx 分支
-3. 提交代码
-4. 新建 Pull Request
-
-#### 特技
-
-1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2. Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4. [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5. Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6. Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+<img src="D:\代码\txx的学习\vue-springboot\vue\src\assets\wx.png"/>

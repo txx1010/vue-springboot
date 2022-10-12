@@ -76,7 +76,7 @@
       </el-pagination>
     </div>
 
-    <el-dialog title="手动组卷" :visible.sync="dialogFormVisible3" width="50%" :close-on-click-modal="false">
+    <el-dialog title="手动组卷" :visible.sync="dialogFormVisible3" width="60%" :close-on-click-modal="false">
       <div style="width: 90%;padding-left: 120px">
         <el-transfer :titles="['题库', '已选']" filter-placeholder="请输入类型：1选择，2判断，3问答" filterable :filter-method="filterMethod"
                      v-model="form2.handleQuestionIds" :data="paperQuestions" :props="{key: 'id',label: 'name'}"></el-transfer>

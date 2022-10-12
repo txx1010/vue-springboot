@@ -1,5 +1,9 @@
 package com.txx.springboot.controller;
 
+import com.txx.springboot.common.Result;
+import com.txx.springboot.config.AliPayConfig;
+import com.txx.springboot.controller.dto.AliPay;
+
 
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
@@ -16,6 +20,8 @@ import com.txx.springboot.config.AliPayConfig;
 import com.txx.springboot.controller.dto.AliPay;
 import com.txx.springboot.entity.Orders;
 import com.txx.springboot.mapper.OrdersMapper;
+import com.txx.springboot.entity.Orders;
+import com.txx.springboot.mapper.OrdersMapper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +33,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
-// dnrswf3876@sandbox.com
+// xjlugv6874@sandbox.com
+// 9428521.24 - 30 = 9428491.24 + 30 = 9428521.24
 @RestController
 @RequestMapping("/alipay")
 public class AliPayController {
@@ -50,7 +57,7 @@ public class AliPayController {
         AlipayClient alipayClient = new DefaultAlipayClient(GATEWAY_URL, aliPayConfig.getAppId(),
                 aliPayConfig.getAppPrivateKey(), FORMAT, CHARSET, aliPayConfig.getAlipayPublicKey(), SIGN_TYPE);
 
-        // 2. 传参，本地数据库中存储的订单信息传给支付宝进行调用 创建 Request并设置Request参数
+        // 2. 创建 Request并设置Request参数
         AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();  // 发送请求的 Request类
         request.setNotifyUrl(aliPayConfig.getNotifyUrl());
         JSONObject bizContent = new JSONObject();
@@ -60,7 +67,7 @@ public class AliPayController {
         bizContent.set("product_code", "FAST_INSTANT_TRADE_PAY");  // 固定配置
         request.setBizContent(bizContent.toString());
 
-        //3. 执行请求，拿到响应的结果，返回给浏览器
+        // 执行请求，拿到响应的结果，返回给浏览器
         String form = "";
         try {
             form = alipayClient.pageExecute(request).getBody(); // 调用SDK生成表单
@@ -68,7 +75,7 @@ public class AliPayController {
             e.printStackTrace();
         }
         httpResponse.setContentType("text/html;charset=" + CHARSET);
-        httpResponse.getWriter().write(form);// 直接将完整的表单html（支付宝提供的支付页面）输出到页面
+        httpResponse.getWriter().write(form);// 直接将完整的表单html输出到页面
         httpResponse.getWriter().flush();
         httpResponse.getWriter().close();
     }
@@ -129,12 +136,12 @@ public class AliPayController {
         AlipayClient alipayClient = new DefaultAlipayClient(GATEWAY_URL,
                 aliPayConfig.getAppId(), aliPayConfig.getAppPrivateKey(), FORMAT, CHARSET,
                 aliPayConfig.getAlipayPublicKey(), SIGN_TYPE);
-        // 2. 创建 Request，设置参数，发送参数给支付宝
+        // 2. 创建 Request，设置参数
         AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
         JSONObject bizContent = new JSONObject();
-        bizContent.set("trade_no", aliPay.getAlipayTraceNo());  // 支付宝回调的订单流水号（alipay_no）
+        bizContent.set("trade_no", aliPay.getAlipayTraceNo());  // 支付宝回调的订单流水号
         bizContent.set("refund_amount", aliPay.getTotalAmount());  // 订单的总金额
-        bizContent.set("out_request_no", aliPay.getTraceNo());   //  我的订单编号(no)
+        bizContent.set("out_request_no", aliPay.getTraceNo());   //  我的订单编号
 
         // 返回参数选项，按需传入
         //JSONArray queryOptions = new JSONArray();
@@ -159,4 +166,6 @@ public class AliPayController {
     }
 
 }
+
+
 

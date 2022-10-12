@@ -16,11 +16,11 @@ const store = new Vuex.Store({
             //清空缓存
             localStorage.removeItem("user")
             localStorage.removeItem("menus")
-            // router.push("/login")
-            router.push("/front/home")
+            router.push("/login")
+            //router.push("/front/home")
 
             //重置路由
-            resetRouter()
+             //resetRouter()
         }
     }
 })

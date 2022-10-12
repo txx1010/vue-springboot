@@ -46,26 +46,28 @@ public class OrdersController {
                 return Result.success();
         }
 
-        @PostMapping("/{goodsId}/{num}")
-        public Result createOrder(@PathVariable Integer goodsId,@PathVariable Integer num) {
-            Goods goods = goodsService.getById(goodsId);
-            if(goods == null){
-                throw new ServiceException("-1","未找到商品");
-            }
-            User currentUser = TokenUtils.getCurrentUser();
-            Integer userId = currentUser.getId();
-
-            Orders orders = new Orders();
-            orders.setName(goods.getName());
-            orders.setNo(DateUtil.format(new Date(),  "yyyyMMdd") + System.currentTimeMillis());
-            orders.setTime(DateUtil.now());
-            orders.setUserId(userId);
-            orders.setTotal(goods.getPrice().multiply(BigDecimal.valueOf(num)));
-            ordersService.saveOrUpdate(orders);
-            return Result.success();
+    @PostMapping("/{goodsId}/{num}")
+    public Result createOrder(@PathVariable Integer goodsId, @PathVariable Integer num) {
+        Goods goods = goodsService.getById(goodsId);
+        if (goods == null) {
+            throw new ServiceException("-1", "未找到商品");
         }
+        User currentUser = TokenUtils.getCurrentUser();
+        Integer userId = currentUser.getId();
 
-        @DeleteMapping("/{id}")
+        Orders orders = new Orders();
+        orders.setName(goods.getName());
+        orders.setNo(DateUtil.format(new Date(), "yyyyMMdd") + System.currentTimeMillis());
+        orders.setTime(DateUtil.now());
+        orders.setUserId(userId);
+        orders.setTotal(goods.getPrice().multiply(BigDecimal.valueOf(num)));
+        ordersService.save(orders);
+        return Result.success();
+    }
+
+
+
+    @DeleteMapping("/{id}")
         public Result delete(@PathVariable Integer id) {
             ordersService.removeById(id);
                 return Result.success();

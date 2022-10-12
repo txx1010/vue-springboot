@@ -132,7 +132,7 @@ router.beforeEach((to, from, next) =>{
     if(storeMenus){
       next("/404")
     } else {
-      // next("/login")
+       // next("/login")
       next("/front/home")
     }
   }

@@ -84,7 +84,8 @@
         </el-form-item>
         <el-form-item label="老师">
           <el-select clearable v-model="form.teacherId" placeholder="请选择">
-            <el-option v-for="item in teachers" :key="item.id" :label="item.nickname" :value="item.id"></el-option>
+            <el-option v-for="item in teachers"
+                       :key="item.id" :label="item.nickname" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="教室">
@@ -96,7 +97,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible1 = false">取 消</el-button>
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" @click="save">确 定</el-button>
       </div>
     </el-dialog>

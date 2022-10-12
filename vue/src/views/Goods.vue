@@ -40,7 +40,7 @@
           <el-button type="primary" @click="buy(scope.row.id)">购 买</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="操作"  width="180" align="center">
+      <el-table-column label="操作"  width="180" align="center" v-if="user.role === 'ROLE_ADMIN'">
         <template slot-scope="scope">
           <el-button type="success" @click="handleEdit(scope.row)">编辑 <i class="el-icon-edit"></i></el-button>
           <el-popconfirm
